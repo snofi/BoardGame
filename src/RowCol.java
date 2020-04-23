@@ -17,6 +17,12 @@ public class RowCol {
         this.row = row;
         this.col = col;
     }
+    public boolean isEqual(RowCol a, RowCol b){
+        if(a.getRow()==b.getRow()&&a.getCol()==b.getCol()){
+            return true;
+        }
+        return false;
+    }
 
 
 }

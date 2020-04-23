@@ -80,4 +80,7 @@ public class Board {
         }
         return true;
     }
+    public int getValue(int row, int col){
+        return board[row][col];
+    }
 }

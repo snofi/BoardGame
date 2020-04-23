@@ -2,27 +2,43 @@ import java.util.ArrayList;
 
 public class AlphaBeta {
     private int aiPlayer;
-    private final static int maxDepth = 10;
+    private final static int maxDepth =15;
     public AlphaBeta(int aiPlayer){
         this.aiPlayer = aiPlayer;
     }
     public RowCol nextMove(MainGame mg){
-
+        if(mg.getCaptured().size()>0 ) {
+            if(mg.getCaptured().get(0)!=null){
+            return mg.getCaptured().get(0);}
+        }
         ArrayList<RowCol> moves = mg.getAvailableMoves();
+
 
         int maxScore = Integer.MIN_VALUE;
         int indexMaxScore = -1;
-        if(moves.size()==1){return moves.get(0);}
+        if(moves.size()==1){ return moves.get(0);}
+
         else{
+
+            RowCol fix = winOrThreat(mg,aiPlayer, moves);
+            if(fix!=null){ return fix;}
+
             for(int i=0; i<moves.size(); i++){
-                MainGame gameCopy = mg.copy(aiPlayer);
                 RowCol move = moves.get(i);
+
+
+                MainGame gameCopy = mg.copy(aiPlayer);
+
                 gameCopy.placeStone(move.getRow(),move.getCol(),aiPlayer);
+
+
                 int score = miniMax(gameCopy, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, -aiPlayer, false);
-                if(score>=maxScore){
+
+                if(score>maxScore){
                     maxScore=score;
                     indexMaxScore = i;
                 }
+
             }
         }
 
@@ -30,7 +46,7 @@ public class AlphaBeta {
     }
     private int miniMax(MainGame mg, int currentDepth, int a, int b, int player, boolean maxPlayer){
 
-        if(mg.ifEnd()){
+        if(mg.getBoard().isFull()||mg.getWinner()!=0){
 
             return calcHeuristic(mg);
         }
@@ -41,28 +57,39 @@ public class AlphaBeta {
 
             return calcHeuristic(mg);
         }
+        if(mg.getCaptured().size()>0){
+            RowCol move = mg.getCaptured().get(0);
+            MainGame gameCopy = mg.copy(player);
+            gameCopy.placeStone(move.getRow(), move.getCol(), player);
+            return miniMax(gameCopy, currentDepth+1, a, b,-player, !maxPlayer);
+        }
+        RowCol endMove = winOrThreat(mg,player, moves);
+        if(endMove!=null){
+            MainGame gameCopy = mg.copy(player);
+            gameCopy.placeStone(endMove.getRow(), endMove.getCol(), player);
+            if(gameCopy.ifMakeLine(endMove.getRow(),endMove.getCol())==player){
+                gameCopy.setWinner(player);
+            }
+            return miniMax(gameCopy, currentDepth+1, a, b,-player, !maxPlayer);
+        }
 
         if(maxPlayer == true){
             int maxScore = Integer.MIN_VALUE;
+
             for(int i=0; i< moves.size(); i++){
                 MainGame gameCopy = mg.copy(player);
                 RowCol move = moves.get(i);
 
-                ArrayList<RowCol> captured = gameCopy.placeStone(move.getRow(),move.getCol(),player);
 
-                if(gameCopy.ifEnd()){
-                    return calcHeuristic(gameCopy);
+                gameCopy.placeStone(move.getRow(),move.getCol(),player);
+                if(gameCopy.ifMakeLine(move.getRow(),move.getCol())==player){
+                    gameCopy.setWinner(player);
                 }
-//                if(captured.size()>0){
-//                    for(RowCol: r in captured){
-//
-//                    }
-//
-//                }
+
                 int score = miniMax(gameCopy, currentDepth+1, a, b,-player, false);
 
                 maxScore = Math.max(maxScore, score);
-                System.out.println("max"+maxScore+"score"+score);
+//                System.out.println("max"+maxScore+"score"+score);
                 a = Math.max(a, maxScore);
                 if (a>= b){
                     break;
@@ -80,12 +107,14 @@ public class AlphaBeta {
 
                 gameCopy.placeStone(move.getRow(), move.getCol(), player);
 
-                if(gameCopy.ifEnd()){
-                    return calcHeuristic(gameCopy);
+                if(gameCopy.ifMakeLine(move.getRow(),move.getCol())==player){
+                    gameCopy.setWinner(player);
                 }
-
                 int score = miniMax(gameCopy,  currentDepth+1, a,b, -player,  true);
                 minScore = Math.min(minScore, score);
+
+//                    System.out.println(move.getRow()+" "+move.getCol() + "score"+ score);
+
 
                 b= Math.min(b, minScore);
                 if(a>=b){
@@ -99,13 +128,28 @@ public class AlphaBeta {
     }
     private int calcHeuristic(MainGame mg){
         int val = mg.getWinner();
-//        mg.getBoard().printBoard();
+
         if(val==aiPlayer) {
 
 //            System.out.println("com won" + aiPlayer);
             return 1;}
         if(val == -aiPlayer) {return -1;}
         return 0;
+    }
+
+    private RowCol winOrThreat(MainGame mg, int player, ArrayList<RowCol> moves){
+        RowCol next = null;
+        for(int i=0; i<moves.size();i++){
+            RowCol move = moves.get(i);
+            if(mg.ifMakeLine(move.getRow(),move.getCol())==player){
+                return move;
+            }
+            if(mg.ifMakeLine(move.getRow(),move.getCol())==-player){
+                next = move;
+            }
+        }
+        if(next!=null){return next;}
+        return null;
     }
 
 
