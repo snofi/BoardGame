@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class AlphaBeta {
     private int aiPlayer;
-    private final static int maxDepth =15;
+    private final static int maxDepth =29;
     public AlphaBeta(int aiPlayer){
         this.aiPlayer = aiPlayer;
     }
@@ -33,6 +33,7 @@ public class AlphaBeta {
 
 
                 int score = miniMax(gameCopy, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, -aiPlayer, false);
+                if(score==aiPlayer)return move;
 
                 if(score>maxScore){
                     maxScore=score;

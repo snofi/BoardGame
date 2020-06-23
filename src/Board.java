@@ -7,6 +7,8 @@ public class Board {
     private int rowLength;
     private int colLength;
     private int[][] board;
+    private long zobristKey;
+    private int[] zobristTable;
 
     public Board(int row, int col){
         rowLength = row;
@@ -18,6 +20,8 @@ public class Board {
                 board[i][j] = 0;
             }
         }
+        zobristKey=0;
+        zobristTable = new int[row*col];
 
     }
     public Board(int[][] board){
