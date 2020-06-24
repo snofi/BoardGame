@@ -14,10 +14,10 @@ public class Main {
 //                    {-1,0,1,-1}};
 
 //       Board board = new Board(example);
-        Board board = new Board(4,4);
+        Board board = new Board(5,6);
        MainGame game = new MainGame(board);
-        Alpha ai = new Alpha(1,game);
-       Alpha ai2 = new Alpha(-1,game);
+        Alpha ai = new Alpha(1,game,true);
+       Alpha ai2 = new Alpha(-1,game,false);
         RowCol black = null;
         RowCol white = null;
        boolean end = false;
