@@ -25,29 +25,36 @@ public class Tree {
         SimpleDateFormat simpleDateFormat =new SimpleDateFormat(pattern, new Locale("en", "US"));
         String date = simpleDateFormat.format(new Date());
 //        path = "Tree_Logs/print:" + date + "boardsize_" + mg.getBoard().getRowLength()+ "x" + mg.getBoard().getColLength() + ".txt";
-        path = "output_4x4.txt";
+        path = "output_5x6capture30.txt";
         FileWriter write = new FileWriter(path,true);
         printLine = new PrintWriter(write);
 
     }
-    public void initialSolve(MainGame mg, Move move, int currentDepth, int nodeNumber){
-        this.mg = mg;
-        depth = currentDepth;
-        message = "Depth is " + depth +", Node "+ nodeNumber+" Starting---";
-        printLine.printf("%s" + "%n", message);
-
-//        printLine.println(message);
-
-    }
-    public int solve(MainGame mg, int nodeCnt, int currentDepth){
+//    public void initialSolve(MainGame mg, Move move, int currentDepth, int nodeNumber){
+//        this.mg = mg;
+//        depth = currentDepth;
+//        message = "Depth is " + depth +", Node "+ nodeNumber+" Starting---";
+//        printLine.printf("%s" + "%n", message);
+//
+////        printLine.println(message);
+//
+//    }
+    public int solve(MainGame mg, RowCol rowCol, int nodeCnt, int currentDepth){
         depth = currentDepth;
         int state = mg.getWinner();
         if (state!=0){
             System.out.println("\nPlayer " + mg.getCurrentPlayer()+ " won");
         }
 //        else System.out.println("---Player "+mg.getCurrentPlayer()+ " at "+ move.getRowCol().getRow()+", "+move.getRowCol().getCol());
-
-        message = "Depth is " + depth + ", Ending, nodes count =="+nodeCnt+" capture Number == " + mg.getCaptureNum() + ", result == " + state;
+        message="";
+        for (int i=0;i<currentDepth;i++){
+            message= message+"    ";
+        }
+    if (mg.getCurrentPlayer()==1) {
+        message += "[Dep " + depth + "] 1, (" + rowCol.getRow() + "," + rowCol.getCol() + ") n= " + nodeCnt + " c= " + mg.getBlackCapCount() + ", r= " + state;
+    }else{
+        message += "[Dep " + depth + "] -1, (" + rowCol.getRow() + "," + rowCol.getCol() + ") n= " + nodeCnt + " c= " + mg.getWhiteCapCount() + ", r= " + state;
+    }
         printLine.printf("%s" + "%n", message);
 
 //        printLine.println(message);

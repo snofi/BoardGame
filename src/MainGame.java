@@ -7,7 +7,7 @@ public class MainGame {
     private Board board;
 
     private final boolean CAPTURE_ONE = false;
-    private final boolean CAPTURE_TWO = true;
+    private final boolean CAPTURE_TWO = false;
     private final boolean THREE_IN_A_ROW = false;
     private final boolean FOUR_IN_A_ROW = true;
     private final int BLACK = 1;
@@ -209,6 +209,7 @@ public class MainGame {
     }
 
     public ArrayList<RowCol> checkCaptureOne(int row, int col, int currentPlayer){
+        this.currentPlayer=currentPlayer;
         ArrayList<RowCol> newCapture = new ArrayList<>();
         int[][] direction = {{-1,0,-2,0},{-1,1,-2,2},{0,1,0,2},{1,1,2,2},{1,0,2,0},{1,-1,2,-2},{0,-1,0,-2},{-1,-1,-2,-2}};
         int captureNum = 0;
@@ -349,7 +350,12 @@ public class MainGame {
             for (RowCol stone : m.getCaptured()) {
                 board.setBoard(stone.getRow(), stone.getCol(), -thisPlayer);
             }
+            captureNum=captureNum-2;
+            if(thisPlayer==BLACK){ blackCapCount-=2;}
+            else if(thisPlayer==WHITE){ whiteCapCount-=2;}
         }
+
+
         updateBoard();
     }
     public int getCurrentPlayer() {
