@@ -14,10 +14,14 @@ public class Main {
 //                    {-1,0,1,-1}};
 
 //       Board board = new Board(example);
-        Board board = new Board(5,6);
+        Board board = new Board(4,4);
        MainGame game = new MainGame(board);
-        Alpha ai = new Alpha(1,game,true);
-       Alpha ai2 = new Alpha(-1,game,false);
+
+       Zobrist zob = new Zobrist(4,4);
+       TranspositionTable t = new TranspositionTable();
+
+        Alpha ai = new Alpha(1,game,zob, t);
+       Alpha ai2 = new Alpha(-1,game,zob, t);
         RowCol black = null;
         RowCol white = null;
        boolean end = false;
