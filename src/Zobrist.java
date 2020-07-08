@@ -1,52 +1,98 @@
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 public class Zobrist {
-    private String table[][];
-    public Zobrist(int row, int col){
+    private BitSet table[][];
+    public Zobrist(int row, int col)throws IOException {
         int board_size = row*col;
-        table = new String[16][2];
+        Random r = new Random();
+
+        table = new BitSet[16][2];
         for (int i=0; i<board_size; i++){
             for(int j=0; j<2; j++){
-                table[i][j]  = randomBitString();
+
+
+                table[i][j]  = new BitSet(64);
+                for(int k=0; k<64;k++){
+                    if(r.nextBoolean()){
+                        table[i][j].set(k);
+                    }
+                }
+
+//                System.out.println(table[i][j]);
             }
         }
 
     }
-    public String hash(Board board){
+    public  BitSet hash(int[][] board){
 
         int[] boardArr=new int[16];
         int c=0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                boardArr[c]=board.getBoard()[i][j];
+                boardArr[c]=board[i][j];
                 c++;
             }
         }
-        String h="0000000000000000000000000000000000000000000000000000000000000000";
-        char[] charray = h.toCharArray();
+        BitSet h = new BitSet(64);
+//        System.out.println(h);
+
         for (int i=0;i<boardArr.length;i++){
+            int j=-1;
             if(boardArr[i]!=0){
-                int j=0;
+
                 if(boardArr[i]==1){
-                   j=0;
+                    j=0;
                 }
                 else if (boardArr[i] == -1) {
                     j=1;
                 }
-               for (int t=0; t<64;t++){
-                   charray[t] =(char)((int)(charray[t])^(int)(table[i][j].charAt(i)) ) ;
-               }
+                h.xor(table[i][j]);
             }
 
+//            System.out.println(table[i][j].length());
+
         }
-        return String.valueOf(charray);
+
+
+
+//        for(int i=0; i<26;i++){
+//            dfd.set(i);
+//        }
+
+        return h;
     }
-    public String randomBitString(){
-        Random random = ThreadLocalRandom.current();
-        byte[] r = new byte[8];
-        random.nextBytes(r);
-        String s = new String(r);
-        return s;
+    public static int entryCalc(BitSet b){
+        BitSet temp = new BitSet(26);
+
+        temp.set(0,26);
+        temp.and(b);
+       long result = temp.toLongArray()[0];
+       return (int)result;
+    }
+//    public String randomBitString(){
+//        Random random = ThreadLocalRandom.current();
+//        byte[] r = new byte[8];
+//        random.nextBytes(r);
+//        String s = new String(r);
+//        return s;
+//    }
+
+
+
+    public static void main(String[] args)throws IOException{
+        Zobrist z = new Zobrist(4,4);
+        int[][] b = {{-1,1,-1,1},
+                {1,0,0,0},
+                {0,0,1,0},
+                {-1,0,1,-1}};
+        z.hash(new Board(b).getBoard());
+
+
+
     }
 }
