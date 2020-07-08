@@ -14,7 +14,7 @@ public class Alpha {
 this.zob = z;
 this.t =t;
         tree = new Tree(mg);
-        this.record=record;
+        this.record=true;
     }
     public RowCol nextMove(MainGame mg){
 
