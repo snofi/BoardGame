@@ -25,7 +25,7 @@ public class Tree {
         SimpleDateFormat simpleDateFormat =new SimpleDateFormat(pattern, new Locale("en", "US"));
         String date = simpleDateFormat.format(new Date());
 //        path = "Tree_Logs/print:" + date + "boardsize_" + mg.getBoard().getRowLength()+ "x" + mg.getBoard().getColLength() + ".txt";
-        path = "output_5x6capture30.txt";
+        path = "output_4x4captureAll.txt";
         FileWriter write = new FileWriter(path,true);
         printLine = new PrintWriter(write);
 
@@ -39,12 +39,10 @@ public class Tree {
 ////        printLine.println(message);
 //
 //    }
-    public int solve(MainGame mg, RowCol rowCol, int nodeCnt, int currentDepth){
+    public int solve(MainGame mg, RowCol rowCol, int nodeCnt, int currentDepth, int state){
         depth = currentDepth;
-        int state = mg.getWinner();
-        if (state!=0){
-            System.out.println("\nPlayer " + mg.getCurrentPlayer()+ " won");
-        }
+
+
 //        else System.out.println("---Player "+mg.getCurrentPlayer()+ " at "+ move.getRowCol().getRow()+", "+move.getRowCol().getCol());
         message="";
         for (int i=0;i<currentDepth;i++){

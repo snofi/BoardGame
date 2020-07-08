@@ -28,18 +28,18 @@ public class Zobrist {
         }
 
     }
-    public BitSet hash(Board board){
+    public  BitSet hash(int[][] board){
 
         int[] boardArr=new int[16];
         int c=0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                boardArr[c]=board.getBoard()[i][j];
+                boardArr[c]=board[i][j];
                 c++;
             }
         }
         BitSet h = new BitSet(64);
-        System.out.println(h);
+//        System.out.println(h);
 
         for (int i=0;i<boardArr.length;i++){
             int j=-1;
@@ -58,16 +58,21 @@ public class Zobrist {
 
         }
 
+
+
+//        for(int i=0; i<26;i++){
+//            dfd.set(i);
+//        }
+
         return h;
     }
-    public static int indexCalc(int result, int depth){
+    public static int entryCalc(BitSet b){
+        BitSet temp = new BitSet(26);
 
-        String biResult = String.format("%2s", Integer.toBinaryString(result)).replace(' ', '0');
-        System.out.println(biResult);
-        String biDepth = String.format("%8s", Integer.toBinaryString(depth)).replace(' ', '0');
-        System.out.println(biDepth);
-        String concat = biDepth+biResult;
-        return Integer.parseInt(concat,2);
+        temp.set(0,26);
+        temp.and(b);
+       long result = temp.toLongArray()[0];
+       return (int)result;
     }
 //    public String randomBitString(){
 //        Random random = ThreadLocalRandom.current();
@@ -85,12 +90,8 @@ public class Zobrist {
                 {1,0,0,0},
                 {0,0,1,0},
                 {-1,0,1,-1}};
-        z.hash(new Board(b));
-//        System.out.println("011110001100111011011010001100100110010101110111101011".length());
-//        long f =Long.parseLong("011110001100111011011010001100100110010101110111101011", 2);
-//        System.out.println(f);
-//        int r = indexCalc(2,16);
-//        System.out.println(r);
+        z.hash(new Board(b).getBoard());
+
 
 
     }
