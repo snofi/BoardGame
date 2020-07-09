@@ -25,10 +25,10 @@ public class Tree {
         SimpleDateFormat simpleDateFormat =new SimpleDateFormat(pattern, new Locale("en", "US"));
         String date = simpleDateFormat.format(new Date());
 //        path = "Tree_Logs/print:" + date + "boardsize_" + mg.getBoard().getRowLength()+ "x" + mg.getBoard().getColLength() + ".txt";
-        path = "output_4x4captureAll.txt";
+        path = "log_4x4capture2.txt";
         FileWriter write = new FileWriter(path,true);
         printLine = new PrintWriter(write);
-
+        printLine.printf("%s" + "%n", "------------------new game--------------------------");
     }
 //    public void initialSolve(MainGame mg, Move move, int currentDepth, int nodeNumber){
 //        this.mg = mg;

@@ -1,9 +1,10 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException {
         long startTime = System.nanoTime();
 //       Scanner scanner = new Scanner(System.in);
 
@@ -66,5 +67,7 @@ public class Main {
         long endTime   = System.nanoTime();
         long totalTime = endTime - startTime;
         System.out.println(totalTime+" seconds");
+        System.out.println("writing");
+        TimeUnit.SECONDS.sleep(15);
     }
 }

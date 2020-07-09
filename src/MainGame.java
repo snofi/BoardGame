@@ -7,7 +7,7 @@ public class MainGame {
     private Board board;
 
     private final boolean CAPTURE_ONE = false;
-    private final boolean CAPTURE_TWO = false;
+    private final boolean CAPTURE_TWO = true;
     private final boolean THREE_IN_A_ROW = false;
     private final boolean FOUR_IN_A_ROW = true;
     private final int BLACK = 1;
