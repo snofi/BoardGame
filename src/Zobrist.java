@@ -71,6 +71,7 @@ public class Zobrist {
 
         temp.set(0,26);
         temp.and(b);
+
        long result = temp.toLongArray()[0];
        return (int)result;
     }
