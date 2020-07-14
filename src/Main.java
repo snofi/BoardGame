@@ -15,10 +15,10 @@ public class Main {
 //                    {-1,0,1,-1}};
 
 //       Board board = new Board(example);
-        Board board = new Board(4,4);
+        Board board = new Board(2,2);
        MainGame game = new MainGame(board);
 
-       Zobrist zob = new Zobrist(4,4);
+       Zobrist zob = new Zobrist(2,2);
        TranspositionTable t = new TranspositionTable();
 
         Alpha ai = new Alpha(1,game,zob, t);
@@ -68,6 +68,6 @@ public class Main {
         long totalTime = endTime - startTime;
         System.out.println(totalTime+" seconds");
         System.out.println("writing");
-        TimeUnit.SECONDS.sleep(15);
+//        TimeUnit.SECONDS.sleep(15);
     }
 }

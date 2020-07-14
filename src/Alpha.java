@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 
 public class Alpha {
@@ -13,7 +14,8 @@ public class Alpha {
         this.aiPlayer = aiPlayer;
 this.zob = z;
 this.t =t;
-        tree = new Tree(mg);
+if(aiPlayer==1){
+        tree = new Tree(mg);}
         this.record=true;
     }
     public RowCol nextMove(MainGame mg){
@@ -23,9 +25,12 @@ this.t =t;
 
         int maxScore = Integer.MIN_VALUE;
         int indexMaxScore = -1;
+        int last = 0;
+        int[] list = new int[moves.size()];
+        boolean[] tf = new boolean[moves.size()];
         if(moves.size()==1){ return moves.get(0);}
-
         else{
+
             for(int i=0; i<moves.size(); i++){
                 RowCol move = moves.get(i);
 
@@ -39,27 +44,31 @@ this.t =t;
                 if( t.checkEntryExist(entry)){
                     if(t.ifSameBoard(entry,bitBoard)){
                         score =t.getScore(entry,aiPlayer);
+                        tf[i]=true;
                     }
                     else{
-                        System.out.println("collision!");
-                        score =miniMax(mg, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, -aiPlayer, false);
+//                        System.out.println("collision!");
+                        score =miniMax(mg, 1, Integer.MIN_VALUE, Integer.MAX_VALUE, -aiPlayer, false);
                         if(0<=t.getDepth(entry)){
                             t.updateEntry(entry,bitBoard,(byte)score,0,aiPlayer);
                         }
                     }
                 }
                 else{
-                    score = miniMax(mg, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, -aiPlayer, false);
+                    score = miniMax(mg, 1, Integer.MIN_VALUE, Integer.MAX_VALUE, -aiPlayer, false);
                     t.updateEntry(entry,bitBoard,(byte)score,0,aiPlayer);
                 }
-                tree.solve(mg, move, moves.size(),0,score);
-
+                list[i]=score;
+                if(aiPlayer==1) {
+                    tree.solve(mg, move, moves.size(), 0, score);
+                }
 
 
                 if(score>maxScore){
                     maxScore=score;
                     indexMaxScore = i;
                 }
+                last = score;
 
                 mg.revertMove(aiPlayer,m);
                 if(score==1) {
@@ -70,7 +79,9 @@ this.t =t;
             }
         }
 
-
+//        System.out.println("score of maxMove: "+maxScore);
+//        System.out.println(Arrays.toString(list));
+//        System.out.println(Arrays.toString(tf));
         return moves.get(indexMaxScore) ;
     }
     private int miniMax(MainGame mg, int currentDepth, int a, int b, int player, boolean maxPlayer){
@@ -143,7 +154,7 @@ this.t =t;
                    score = miniMax(mg, currentDepth+1, a, b,-player, false);
                    t.updateEntry(entry,bitBoard,(byte)score,currentDepth,aiPlayer);
                }
-                if(currentDepth<5&&record) {
+                if(currentDepth<5&&record&&aiPlayer==1) {
                     tree.solve(mg, move, moves.size(),currentDepth,score);
                 }
                 mg.revertMove(player,m);
@@ -198,7 +209,7 @@ this.t =t;
                     score = miniMax(mg, currentDepth+1, a, b,-player, true);
                     t.updateEntry(entry,bitBoard,(byte)score,currentDepth,aiPlayer);
                 }
-                if(currentDepth<5&&record) {
+                if(currentDepth<5&&record&&aiPlayer==1) {
                     tree.solve(mg, move, moves.size(),currentDepth,score);
                 }
 

@@ -48,9 +48,13 @@ public class TranspositionTable  {
 
         val.or(bitDepth);
 
-        table[entry]=val.toLongArray()[0];
 
 
+           long ans     =val.toLongArray()[0];
+//        System.out.println(ans);
+        //find out why the value of entry is so small, it should be a large number
+
+        table[entry] = ans;
     }
     public boolean ifSameBoard(int entry, BitSet current){
         long p = table[entry];

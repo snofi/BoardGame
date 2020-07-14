@@ -25,7 +25,7 @@ public class Tree {
         SimpleDateFormat simpleDateFormat =new SimpleDateFormat(pattern, new Locale("en", "US"));
         String date = simpleDateFormat.format(new Date());
 //        path = "Tree_Logs/print:" + date + "boardsize_" + mg.getBoard().getRowLength()+ "x" + mg.getBoard().getColLength() + ".txt";
-        path = "log_4x4capture2.txt";
+        path = "log_2x2capture_two_fin.txt";
         FileWriter write = new FileWriter(path,true);
         printLine = new PrintWriter(write);
         printLine.printf("%s" + "%n", "------------------new game--------------------------");
@@ -49,9 +49,9 @@ public class Tree {
             message= message+"    ";
         }
     if (mg.getCurrentPlayer()==1) {
-        message += "[Dep " + depth + "] 1, (" + rowCol.getRow() + "," + rowCol.getCol() + ") n= " + nodeCnt + " c= " + mg.getBlackCapCount() + ", r= " + state;
+        message += "[Dep " + depth + "] 1, at " +  getCharForNumber((rowCol.getCol()+1)) +(mg.getBoard().getRowLength()-rowCol.getRow()) +  ", n= " + nodeCnt + " c= " + mg.getWhiteCapCount() + ", r= " + state;
     }else{
-        message += "[Dep " + depth + "] -1, (" + rowCol.getRow() + "," + rowCol.getCol() + ") n= " + nodeCnt + " c= " + mg.getWhiteCapCount() + ", r= " + state;
+        message += "[Dep " + depth + "] -1, at " +  getCharForNumber((rowCol.getCol()+1)) +(mg.getBoard().getRowLength()-rowCol.getRow()) +  ", n= " + nodeCnt + " c= " + mg.getWhiteCapCount() + ", r= " + state;
     }
         printLine.printf("%s" + "%n", message);
 
@@ -62,5 +62,8 @@ public class Tree {
 
         return count;
 
+    }
+    private String getCharForNumber(int i) {
+        return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
     }
 }

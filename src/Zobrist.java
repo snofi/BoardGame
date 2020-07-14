@@ -11,7 +11,7 @@ public class Zobrist {
         int board_size = row*col;
         Random r = new Random();
 
-        table = new BitSet[16][2];
+        table = new BitSet[board_size][2];
         for (int i=0; i<board_size; i++){
             for(int j=0; j<2; j++){
 
@@ -30,10 +30,10 @@ public class Zobrist {
     }
     public  BitSet hash(int[][] board){
 
-        int[] boardArr=new int[16];
+        int[] boardArr=new int[(board.length)*(board[0].length)];
         int c=0;
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
                 boardArr[c]=board[i][j];
                 c++;
             }
@@ -68,11 +68,20 @@ public class Zobrist {
     }
     public static int entryCalc(BitSet b){
         BitSet temp = new BitSet(26);
-
+//
         temp.set(0,26);
         temp.and(b);
+        //         b.clear(26,b.size());
+        long result=0;
+        try {
+           result = temp.toLongArray()[0];
 
-       long result = temp.toLongArray()[0];
+        }
+        catch(ArrayIndexOutOfBoundsException exception) {
+            System.out.println("exception: "+exception);
+            System.out.println(result);
+        }
+
        return (int)result;
     }
 //    public String randomBitString(){
