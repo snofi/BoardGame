@@ -16,6 +16,14 @@ public class TranspositionTable  {
         }
         return true;
     }
+    public int checkEntryExist(int[] entry){
+        for(int i=0; i<entry.length; i++){
+            if(checkEntryExist(entry[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
     public void updateEntry(int entry, BitSet val, byte result, int depth, int aiPlayer){
         if(aiPlayer==-1){
             result=(byte)-result;

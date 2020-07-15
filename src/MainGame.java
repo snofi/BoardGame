@@ -262,7 +262,7 @@ public class MainGame {
 
             }
         }
-
+       
         return newCapture;
     }
     private boolean posValid(int row,int col){
