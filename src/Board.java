@@ -7,8 +7,7 @@ public class Board {
     private int rowLength;
     private int colLength;
     private int[][] board;
-    private long zobristKey;
-    private int[] zobristTable;
+
 
     public Board(int row, int col){
         rowLength = row;
@@ -20,8 +19,7 @@ public class Board {
                 board[i][j] = 0;
             }
         }
-        zobristKey=0;
-        zobristTable = new int[row*col];
+
 
     }
     public Board(int[][] board){
@@ -63,6 +61,16 @@ public class Board {
             }
         }
         return new Board(newBoard);
+    }
+    public boolean isEqual(int[][] b1, int[][] b2){
+        for(int i=0; i<b1.length; i++){
+            for(int j=0; j<b1[0].length; j++){
+                if(b1[i][j]!=b2[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     public ArrayList getAvailableMoves(){
         ArrayList<RowCol> empty = new ArrayList<>();

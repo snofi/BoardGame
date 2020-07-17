@@ -7,16 +7,16 @@ public class Solver {
 
 
 //       Board board = new Board(example);
-        Board board = new Board(5,5);
+        Board board = new Board(4,4);
         MainGame game = new MainGame(board);
 
-        Zobrist zob = new Zobrist(5,5);
+        Zobrist zob = new Zobrist(4,4);
         TranspositionTable t = new TranspositionTable();
 
         AB ai = new AB(1,game,zob, t);
         board.printBoard();
 
-        int result = ai.miniMax(game, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, true);
+        int result = ai.miniMax(game, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, true, new RowCol(0,0));
 
         System.out.println("result: "+ result);
 
@@ -27,5 +27,7 @@ public class Solver {
         System.out.println("writing");
 //        TimeUnit.SECONDS.sleep(15);
         System.out.println("zobCOunt: "+ ai.zobCount);
+        System.out.println("nodesCount: "+ ai.runCounter);
+        System.out.println("MaxDepth:"+ ai.maxDepth);
     }
 }

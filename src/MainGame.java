@@ -7,7 +7,7 @@ public class MainGame {
     private Board board;
 
     private final boolean CAPTURE_ONE = false;
-    private final boolean CAPTURE_TWO = true;
+    public final boolean CAPTURE_TWO = true;
     private final boolean THREE_IN_A_ROW = false;
     private final boolean FOUR_IN_A_ROW = true;
     private final int BLACK = 1;
@@ -50,15 +50,15 @@ public class MainGame {
         colLength = board.getColLength();
     }
 
-    public boolean ifEnd(){
-
-        if(checkDiagonals()||checkColumns()||checkRows()|| board.isFull()){
-
-            return true;
-        }
-
-        return false;
-    }
+//    public boolean ifEnd(){
+//
+//        if(checkDiagonals()||checkColumns()||checkRows()|| board.isFull()){
+//
+//            return true;
+//        }
+//
+//        return false;
+//    }
     public int ifMakeLine(int row, int col){
         if(THREE_IN_A_ROW){
             return ifMakeThree(row,col);
@@ -68,15 +68,13 @@ public class MainGame {
         }
         return 0;
     }
-    public boolean ifLine(){
+    public boolean ifEnd(){
         setWinner(0);
-        checkRows();
-        checkColumns();
-        checkDiagonals();
-        if (getWinner()==0){
-            return false;
+
+        if(checkRows()||checkColumns()||checkDiagonals()||board.isFull()){
+            return true;
         }
-        return true;
+        return false;
     }
     public int ifMakeThree(int row, int col){
         final int[][] directions = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
