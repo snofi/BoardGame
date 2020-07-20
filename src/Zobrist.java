@@ -28,6 +28,29 @@ public class Zobrist {
         }
 
     }
+//    public  BitSet hash(int[][] board) {
+//
+//        BitSet h = new BitSet(64);
+//
+////        System.out.println(h);
+//
+//        for (int i = 0; i < board.length; i++) {
+//            for (int j = 0; j < board[0].length; j++) {
+//                int k = -1;
+//                if (board[i][j] != 0) {
+//                    if (board[i][j] == 1) {
+//                        k = 0;
+//                    } else if (board[i][j] == -1) {
+//                        k = 1;
+//                    }
+//                    h.xor(table[i][j][k]);
+//                }
+//
+//            }
+////            System.out.println(table[i][j].length());
+//        }
+//        return h;
+//    }
     public  BitSet[] hash(int[][] board){
 
 //        int[] boardArr=new int[(board.length)*(board[0].length)];
@@ -43,6 +66,7 @@ public class Zobrist {
         BitSet h[] = new BitSet[4];
         for(int i=0;i<4; i++){
             h[i]= new BitSet(64);
+            h[i].clear();
         }
 
 //        System.out.println(h);
@@ -59,6 +83,9 @@ public class Zobrist {
                     }
 
                     h[0].xor(table[i][j][k]);
+//                    h[1].xor(table[i][j][k]);
+//                    h[2].xor(table[i][j][k]);
+//                    h[3].xor(table[i][j][k]);
                     h[1].xor(table[i][col-1-j][k]); //flip to the right
                     h[2].xor(table[row-1-i][j][k]); // flip down
                     h[3].xor(table[row-1-i][col-1-j][k]); //rotate 180 degree
@@ -127,12 +154,29 @@ public class Zobrist {
 
 
     public static void main(String[] args)throws IOException{
-        Zobrist z = new Zobrist(4,4);
-        int[][] b = {{-1,1,-1,1},
-                {1,0,0,0},
-                {0,0,1,0},
-                {-1,0,1,-1}};
-        z.hash(new Board(b).getBoard());
+//        Zobrist z = new Zobrist(4,4);
+//        int[][] b = {{-1,1,0,1},
+//                {1,0,0,0},
+//                {0,1,1,0},
+//                {-1,0,1,-1}};
+        int[][] b = {{-1,1,0},
+                {1,0,0},
+                {0,1,1}};
+//        z.hash(new Board(b).getBoard());
+//        for (int i=0;i<b.length;i++){
+//            for(int j=0; j<b[0].length; j++){
+//                System.out.print(b[b.length-1-i][j]+" ");
+//            }
+//            System.out.println();
+//        }
+        int[][] a = new int[3][3];
+        for (int i=0; i<3; i++){
+            for(int j=0; j<3; j++){
+                a[i][j] = b[3-1-i][j];
+            }
+        }
+        Board aboard = new Board(a);
+        aboard.printBoard();
 
 
 

@@ -11,10 +11,10 @@ public class TranspositionTable  {
 
     }
     public boolean checkEntryExist(int entry){
-        if(table[entry]==0){
-            return false;
+        if(table[entry]!=0){
+            return true;
         }
-        return true;
+        return false;
     }
     public int checkEntryExist(int[] entry){
         for(int i=0; i<entry.length; i++){

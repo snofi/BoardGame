@@ -7,9 +7,9 @@ public class MainGame {
     private Board board;
 
     private final boolean CAPTURE_ONE = false;
-    private final boolean CAPTURE_TWO = true;
-    private final boolean THREE_IN_A_ROW = false;
-    private final boolean FOUR_IN_A_ROW = true;
+    private final boolean CAPTURE_TWO = false;
+    private final boolean THREE_IN_A_ROW = true;
+    private final boolean FOUR_IN_A_ROW = false;
     private final int BLACK = 1;
     private final int WHITE = -1;
     private final int EMPTY = 0;
@@ -70,13 +70,14 @@ public class MainGame {
     }
     public boolean ifLine(){
         setWinner(0);
-        checkRows();
-        checkColumns();
-        checkDiagonals();
-        if (getWinner()==0){
-            return false;
+//        checkRows();
+//        checkColumns();
+//        checkDiagonals();
+        if(checkDiagonals()||checkColumns()||checkRows()){
+            return true;
         }
-        return true;
+
+        return false;
     }
     public int ifMakeThree(int row, int col){
         final int[][] directions = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
@@ -150,6 +151,7 @@ public class MainGame {
                 if(FOUR_IN_A_ROW){
                     if(posValid(i,j+3)){
                         if(checkLine(currentBoard[i][j], currentBoard[i][j+1], currentBoard[i][j+2], currentBoard[i][j+3])){
+                            winner = currentBoard[i][j];
                             return true;}
                     }
                 }
@@ -171,6 +173,7 @@ public class MainGame {
                 if(FOUR_IN_A_ROW){
                     if(posValid(j+3,i)){
                         if(checkLine(currentBoard[j][i], currentBoard[j + 1][i], currentBoard[j + 2][i], currentBoard[j+3][i])){
+                            winner = currentBoard[j][i];
                             return true;}
                     }
                 }
@@ -198,7 +201,7 @@ public class MainGame {
                             return true;
                         }
                         if (checkLine(currentBoard[i][j+3],currentBoard[i +1][j+2], currentBoard[i + 2][j +1], currentBoard[i+3][j])) {
-                            winner = currentBoard[i + 2][j];
+                            winner = currentBoard[i + 2][j+1];
                             return true;
                         }
                     }
