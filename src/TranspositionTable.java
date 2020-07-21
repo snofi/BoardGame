@@ -24,13 +24,12 @@ public class TranspositionTable  {
         }
         return -1;
     }
-    public void updateEntry(int entry, BitSet val, byte result, int depth, int aiPlayer){
-        if(aiPlayer==-1){
-            result=(byte)-result;
-        }
+    public void updateEntry(int entry, BitSet val, byte result, byte cut, int depth, int aiPlayer){
+
         if(result ==-1){
             result = 2;
         }
+        cut = (cut==-1)? 2:cut;
         if(result>2||result<0) {
             System.out.println("update error "+result);
         }
@@ -44,15 +43,19 @@ public class TranspositionTable  {
 //        System.out.println(bit38);
         byte[] r = {result};
 
+         cut = (byte)(4*cut);
+        byte[] c = {cut};
         BitSet bitResult = BitSet.valueOf(r);
+        BitSet bitCut = BitSet.valueOf(c);
 
 
 
-        long d4 = depth*4;
+        long d8 = depth*8;
 
-        BitSet bitDepth = longToBitSet(d4);
+        BitSet bitDepth = longToBitSet(d8);
 
         bitDepth.or(bitResult);
+        bitDepth.or(bitCut);
 
         val.or(bitDepth);
 
@@ -64,7 +67,7 @@ public class TranspositionTable  {
 
         table[entry] = ans;
     }
-    public boolean ifSameBoard(int entry, BitSet current){
+    public boolean ifSameBoard(int entry, BitSet current, int c, int player){
         long p = table[entry];
 //        System.out.println(p);
         BitSet prev = longToBitSet(p);
@@ -73,8 +76,16 @@ public class TranspositionTable  {
 
         prev.clear(1,26);
         if(current.equals(prev)){
+            int prev_cut = getCut(entry,player);
+            if(player==1){
+                if(c<=prev_cut){ return true;}
+            }
+            else if(player==-1){
 
-            return true;
+               if(c>=prev_cut) {return true;}
+            }
+
+
         }
 
         return false;
@@ -105,12 +116,35 @@ public class TranspositionTable  {
 
         return s;
     }
+    public int getCut(int entry, int aiPlayer){
+        long v = table[entry];
+
+        BitSet bit = longToBitSet(v);
+
+        BitSet cut = bit.get(2,4);
+        System.out.println(cut);
+        BitSet temp = (BitSet) cut.clone();
+        temp.clear(0,2);
+        if(cut.equals(temp)){
+
+            return 0;
+        }
+
+
+        int s =(int)cut.toByteArray()[0];
+        if(s==2){
+            s=-1;
+        }
+
+
+        return s;
+    }
     public int getDepth(int entry){
         long v = table[entry];
         BitSet bit = longToBitSet(v);
 
         BitSet depth = bit.get(0,26);
-        depth.clear(0,2);
+        depth.clear(0,4);
         BitSet temp = (BitSet) depth.clone();
         temp.clear(0,26);
         if(depth.equals(temp)){
@@ -120,7 +154,7 @@ public class TranspositionTable  {
 
 
         long d = depth.toLongArray()[0];
-        d = d/4;
+        d = d/8;
 
         return (int)d;
     }
@@ -137,15 +171,20 @@ public class TranspositionTable  {
     }
 
     public static void main(String[] args)throws IOException {
-//        Zobrist z = new Zobrist(4,4);
-//        TranspositionTable t = new TranspositionTable();
-//        int[][] b = {{-1,1,-1,1},
-//                {1,0,0,0},
-//                {0,0,1,0},
-//                {-1,0,1,-1}};
-//        BitSet bitBoard=z.hash(new Board(b).getBoard());
-//        int score=0;
-//        int entry = z.entryCalc(bitBoard);
+        Zobrist z = new Zobrist(4,4);
+        TranspositionTable t = new TranspositionTable();
+        int[][] b = {{-1,1,-1,1},
+                {1,0,0,0},
+                {0,0,1,0},
+                {-1,0,1,-1}};
+        BitSet[] bitBoard=z.hash(new Board(b).getBoard());
+        int score=0;
+        int cut = -1;
+        int entry[] = z.entryCalc(bitBoard);
+        t.updateEntry(entry[0],bitBoard[0], (byte) score, (byte)cut, 4,1);
+        System.out.println(t.getScore(entry[0],1));
+        System.out.println(t.getCut(entry[0],1));
+        System.out.println(t.getDepth(entry[0]));
 //        System.out.println("Entry= "+entry);
 //
 //        if( t.checkEntryExist(entry)){

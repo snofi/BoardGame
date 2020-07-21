@@ -30,7 +30,7 @@ public class AB {
                 mg.setWinner(0);
                 mg.setCaptureNum(0);
 //                System.out.println("aiPlayer wins");
-                t.updateEntry(ent[0],bitSet[0], (byte)1, currentDepth,aiPlayer);
+                t.updateEntry(ent[0],bitSet[0], (byte)1,(byte)1, currentDepth,player);
 //                System.out.println(t.getScore(ent,aiPlayer));
                 return 1;
             }
@@ -38,7 +38,7 @@ public class AB {
                 mg.setWinner(0);
                 mg.setCaptureNum(0);
 //                System.out.println("aiPlayer loses");
-                t.updateEntry(ent[0],bitSet[0], (byte)-1, currentDepth,aiPlayer);
+                t.updateEntry(ent[0],bitSet[0], (byte)-1,(byte)-1, currentDepth,player);
                 return -1;
             }
         }
@@ -60,7 +60,7 @@ public class AB {
         if(mg.getBoard().isFull()){
             BitSet[] bitSet = zob.hash(mg.getBoard().getBoard());
             int ent[] = zob.entryCalc(bitSet);
-            t.updateEntry(ent[0],bitSet[0], (byte)0, currentDepth,aiPlayer);
+            t.updateEntry(ent[0],bitSet[0], (byte)0, (byte)0,currentDepth,player);
 //            mg.getBoard().printBoard();
             return 0;
         }
@@ -91,9 +91,10 @@ public class AB {
                 int score=0;
                 int entry[] = zob.entryCalc(bitBoard);
 //                int ind = -1;
+                int writeInd=-1;
                 int ind = t.checkEntryExist(entry);
                if( ind!=-1){
-                   if(t.ifSameBoard(entry[ind],bitBoard[ind])){
+                   if(t.ifSameBoard(entry[ind],bitBoard[ind],b, player)){
                        zobCount++;
                     score =t.getScore(entry[ind],aiPlayer);
                        System.out.println("depth"+currentDepth+" looked"+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
@@ -103,17 +104,17 @@ public class AB {
                        System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
                        if(ind!=0){
                            System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+ " write");
-                           t.updateEntry(entry[0],bitBoard[0],(byte)score,currentDepth,aiPlayer);
+                           writeInd = 0;
                        }
                        else if(currentDepth<=t.getDepth(entry[ind])){
                            System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+ " write");
-                           t.updateEntry(entry[ind],bitBoard[ind],(byte)score,currentDepth,aiPlayer);
+                           writeInd= ind;
                        }
                    }
                }
                else{
                    score = miniMax(mg, currentDepth+1, a, b,-player, false,move);
-                   t.updateEntry(entry[0],bitBoard[0],(byte)score,currentDepth,aiPlayer);
+                   writeInd=0;
                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                }
 
@@ -137,6 +138,8 @@ public class AB {
 //                System.out.println("max"+maxScore+"score"+score);
                 a = Math.max(a, maxScore);
                 System.out.println(a+ ", "+b);
+                if(writeInd!=-1){
+                t.updateEntry(entry[writeInd],bitBoard[writeInd],(byte)score,(byte)b,currentDepth,player);}
                 if (a>=b||maxScore==1){
                     System.out.println("pruned");
                     break;
@@ -168,19 +171,15 @@ public class AB {
                 BitSet[] bitBoard = zob.hash(mg.getBoard().getBoard());
                 int score;
                 int entry[] = zob.entryCalc(bitBoard);
-//                int inm = -1;
+               int writeInd = -1;
                 int inm = t.checkEntryExist(entry);
                 if( inm!=-1){
 
-                    if(t.ifSameBoard(entry[inm],bitBoard[inm])){
+                    if(t.ifSameBoard(entry[inm],bitBoard[inm],a,player)){
 zobCount++;
                         score =t.getScore(entry[inm],aiPlayer);
 //                        System.out.println("depth"+currentDepth+" looked"+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
-                        if(inm!=0&&currentDepth>6){
-                            System.out.println(score);
-                            mg.getBoard().printBoard();
 
-                        }
                     }
                     else{
                         score = miniMax(mg, currentDepth+1, a, b,-player, true,move);
@@ -188,17 +187,17 @@ zobCount++;
 
                         if(inm!=0){
                             System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+ " write");
-                            t.updateEntry(entry[0],bitBoard[0],(byte)score,currentDepth,aiPlayer);
+                           writeInd=0;
                         }
                         else if(currentDepth<=t.getDepth(entry[inm])){
                             System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+ " write");
-                            t.updateEntry(entry[inm],bitBoard[inm],(byte)score,currentDepth,aiPlayer);
+                            writeInd=inm;
                         }
                     }
                 }
                 else{
                     score = miniMax(mg, currentDepth+1, a, b,-player, true,move);
-                    t.updateEntry(entry[0],bitBoard[0],(byte)score,currentDepth,aiPlayer);
+                    writeInd=0;
                     System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                 }
                 if(currentDepth<9&record&&aiPlayer==1) {
@@ -223,7 +222,8 @@ zobCount++;
 
                 b= Math.min(b, minScore);
                 System.out.println(a+ ", "+b);
-
+                if(writeInd!=-1){
+                t.updateEntry(entry[writeInd],bitBoard[writeInd],(byte)score,(byte)a,currentDepth,player);}
                 if(a>=b||minScore==-1){
                     System.out.println("pruned");
                     break;
