@@ -77,6 +77,7 @@ public class TranspositionTable  {
         prev.clear(1,26);
         if(current.equals(prev)){
             int prev_cut = getCut(entry,player);
+            if(prev_cut==3){return true;}
             if(player==1){
                 if(c<=prev_cut){ return true;}
             }
@@ -122,7 +123,7 @@ public class TranspositionTable  {
         BitSet bit = longToBitSet(v);
 
         BitSet cut = bit.get(2,4);
-        System.out.println(cut);
+//        System.out.println(cut);
         BitSet temp = (BitSet) cut.clone();
         temp.clear(0,2);
         if(cut.equals(temp)){

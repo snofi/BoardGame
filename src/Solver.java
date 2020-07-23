@@ -7,11 +7,13 @@ public class Solver {
 
 
 //       Board board = new Board(example);
-        int[][] b = {{0,0,0},
-                {0,1,0},
+        int[][] b = {{1,1,1},
+                {-1,1,-1},
                 {0,0,0}};
-        Board board = new Board(b);
+        Board board = new Board(4,4);
         MainGame game = new MainGame(board);
+
+//        System.out.println(game.ifMakeLine(1,1));
 
         Zobrist zob = new Zobrist(board.getRowLength(),board.getColLength());
         TranspositionTable t = new TranspositionTable();
@@ -19,7 +21,7 @@ public class Solver {
         AB ai = new AB(1,game,zob, t);
         board.printBoard();
 
-        int result = ai.miniMax(game, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, -1, false, new RowCol(0,0));
+        int result = ai.miniMax(game, 0,-5, 5, 1, true, new RowCol(0,0));
 
         System.out.println("result: "+ result);
 
