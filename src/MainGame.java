@@ -7,9 +7,9 @@ public class MainGame {
     private Board board;
 
     private final boolean CAPTURE_ONE = false;
-    private final boolean CAPTURE_TWO = true;
+    private final boolean CAPTURE_TWO = false;
     private final boolean THREE_IN_A_ROW = false;
-    private final boolean FOUR_IN_A_ROW = true;
+    private final boolean FOUR_IN_A_ROW =true;
     private final int BLACK = 1;
     private final int WHITE = -1;
     private final int EMPTY = 0;
@@ -70,13 +70,14 @@ public class MainGame {
     }
     public boolean ifLine(){
         setWinner(0);
-        checkRows();
-        checkColumns();
-        checkDiagonals();
-        if (getWinner()==0){
-            return false;
+//        checkRows();
+//        checkColumns();
+//        checkDiagonals();
+        if(checkDiagonals()||checkColumns()||checkRows()){
+            return true;
         }
-        return true;
+
+        return false;
     }
     public int ifMakeThree(int row, int col){
         final int[][] directions = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
@@ -84,7 +85,11 @@ public class MainGame {
            int[] dir = directions[i];
            if(posValid(row+dir[0]*2,col+dir[1]*2)&&board.getValue(row+dir[0],col+dir[1])!=0){
                if(board.getValue(row+dir[0],col+dir[1])==board.getValue(row+dir[0]*2,col+dir[1]*2)){
-                   return board.getValue(row+dir[0],col+dir[1]);
+                   if(board.getValue(row+dir[0],col+dir[1])==board.getValue(row,col)){
+                       winner= board.getValue(row,col);
+                       return winner;
+                   }
+//                   return board.getValue(row+dir[0],col+dir[1]);
                }
            }
         }
@@ -93,7 +98,11 @@ public class MainGame {
             int[] dir = directions[i];
             if(posValid(row+dir[0],col+dir[1])&&posValid(row-dir[0],col-dir[1])&&board.getValue(row+dir[0],col+dir[1])!=0){
                 if(board.getValue(row+dir[0],col+dir[1])==board.getValue(row-dir[0],col-dir[1])){
-                    return board.getValue(row+dir[0],col+dir[1]);
+                    if(board.getValue(row+dir[0],col+dir[1])==board.getValue(row,col)){
+                        winner= board.getValue(row,col);
+                        return winner;
+                    }
+//                    return board.getValue(row+dir[0],col+dir[1]);
                 }
             }
         }
@@ -110,7 +119,11 @@ public class MainGame {
                 int[] mid1 = {row+dir[0],col+dir[1]};
                 int[] mid2 = {row+dir[0]*2,col+dir[1]*2};
                 if(board.getValue(end[0],end[1])==board.getValue(mid1[0],mid1[1])&&board.getValue(mid1[0],mid1[1])==board.getValue(mid2[0],mid2[1])){
-                    return board.getValue(end[0],end[1]);
+                    if(board.getValue(end[0],end[1])==board.getValue(row,col)){
+                        winner = board.getValue(row,col);
+                        return winner;
+                    }
+//                    return board.getValue(end[0],end[1]);
                 }
             }
         }
@@ -124,12 +137,20 @@ public class MainGame {
                 int[] four = {row-dir[0]*2, col-dir[1]*2};
                 if (posValid(one[0],one[1]) && posValid(three[0],three[1]) && board.getValue(one[0],one[1]) != 0) {
                     if (board.getValue(one[0],one[1]) == board.getValue(two[0],two[1]) && board.getValue(two[0],two[1]) == board.getValue(three[0],three[1] )) {
-                        return board.getValue(one[0],one[1]);
+                        if(board.getValue(one[0],one[1])==board.getValue(row,col)){
+                            winner = board.getValue(row,col);
+                            return winner;
+                        }
+//                        return board.getValue(one[0],one[1]);
                     }
                 }
                 if (posValid(two[0],two[1]) && posValid(four[0],four[1]) && board.getValue(two[0],two[1]) != 0) {
                     if (board.getValue(two[0],two[1]) == board.getValue(three[0],three[1]) && board.getValue(three[0],three[1]) == board.getValue(four[0],four[1] )) {
-                        return board.getValue(two[0],two[1]);
+                        if(board.getValue(four[0],four[1])==board.getValue(row,col)){
+                            winner = board.getValue(row,col);
+                            return winner;
+                        }
+//                        return board.getValue(two[0],two[1]);
                     }
                 }
 
@@ -150,6 +171,7 @@ public class MainGame {
                 if(FOUR_IN_A_ROW){
                     if(posValid(i,j+3)){
                         if(checkLine(currentBoard[i][j], currentBoard[i][j+1], currentBoard[i][j+2], currentBoard[i][j+3])){
+                            winner = currentBoard[i][j];
                             return true;}
                     }
                 }
@@ -171,6 +193,7 @@ public class MainGame {
                 if(FOUR_IN_A_ROW){
                     if(posValid(j+3,i)){
                         if(checkLine(currentBoard[j][i], currentBoard[j + 1][i], currentBoard[j + 2][i], currentBoard[j+3][i])){
+                            winner = currentBoard[j][i];
                             return true;}
                     }
                 }
@@ -198,7 +221,7 @@ public class MainGame {
                             return true;
                         }
                         if (checkLine(currentBoard[i][j+3],currentBoard[i +1][j+2], currentBoard[i + 2][j +1], currentBoard[i+3][j])) {
-                            winner = currentBoard[i + 2][j];
+                            winner = currentBoard[i + 2][j+1];
                             return true;
                         }
                     }
