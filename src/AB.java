@@ -10,19 +10,28 @@ public class AB {
         public int zobCount;
 //        private final static int maxDepth =10;
         private boolean record;
+        public static int maxDepth;
         private Zobrist zob;
         private TranspositionTable t;
+        private ArrayList<int[][]> sequence;
+        private int sequenceIndex;
+        public int runCounter;
         public AB(int aiPlayer, MainGame mg, Zobrist z, TranspositionTable t) throws IOException {
             this.aiPlayer = aiPlayer;
             this.zob = z;
             this.t =t;
+            this.sequence = new ArrayList<>();
+            this.sequenceIndex = -1;
             if(aiPlayer==1){
                 tree = new Tree(mg);}
             this.record=true;
             this.zobCount=0;
+            runCounter=0;
+             maxDepth=0;
         }
         public int miniMax(MainGame mg, int currentDepth, int a, int b, int player, boolean maxPlayer, RowCol rc) {
-            int sta =0;
+            maxDepth=Math.max(maxDepth,currentDepth);
+            runCounter++;
             if(mg.ifLine()){
             BitSet[] bitSet = zob.hash(mg.getBoard().getBoard());
             int ent[] = zob.entryCalc(bitSet);
@@ -74,6 +83,23 @@ public class AB {
 
                 ArrayList cap = mg.placeStone(move.getRow(),move.getCol(),player);
 
+                System.out.println("p"+player+" at ("+move.getRow()+", "+move.getCol());
+//                    mg.getBoard().printBoard();
+                BitSet bitSet[] = zob.hash(mg.getBoard().getBoard());
+                int ent[] = zob.entryCalc(bitSet);
+                int minEntry = zob.minEntryIndex(ent);
+                if(mg.CAPTURE_TWO&& cap.size()>0 ){
+                    for(int j = sequence.size()-1; j>=0; j--){
+                        if(Arrays.deepEquals(mg.getBoard().getBoard(),sequence.get(j))){
+                            t.updateEntry(ent[minEntry], bitSet[minEntry], (byte) 0, (byte) b,currentDepth, player);
+//            mg.getBoard().printBoard();
+
+                            return 0;
+                        }
+                    }
+
+                }
+                sequence.add(mg.getBoard().copy().getBoard());
                 Move m = new Move(move,cap);
 
 //                if(currentDepth<5&&record) {
@@ -116,17 +142,18 @@ public class AB {
 //                   System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                }
 
-//                if(currentDepth<9) {
-//                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
-//                    mg.getBoard().printBoard();
-////                    tree.solve(mg, move, moves.size(),currentDepth,score);
-//                }
+                if(currentDepth<3) {
+                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
+                    mg.getBoard().printBoard();
+//                    tree.solve(mg, move, moves.size(),currentDepth,score);
+                }
 
 
                 if(score==1&&currentDepth==6){
 //                    System.out.println("why");
                 }
                 mg.revertMove(player,m);
+                sequence.remove(sequence.size()-1);
 //                if(score>maxScore){
 //                    maxScore=score;
 //                    indexMaxScore = i;
@@ -135,8 +162,7 @@ public class AB {
 
 //                System.out.println("max"+maxScore+"score"+score);
                 a = Math.max(a, maxScore);
-                if(currentDepth<3)
-                {System.out.println(a+ ", "+b);}
+
                 if(writeInd!=-1){
                 t.updateEntry(entry[writeInd],bitBoard[writeInd],(byte)score,(byte)b,currentDepth,player);}
                 if (a>=b||maxScore==1){
@@ -148,8 +174,8 @@ public class AB {
 //
             }
 //            if(currentDepth<5) {
-//                tree.solve(mg, moves.get(indexMaxScore), moves.size(),currentDepth);
-//            }
+//
+//                }
             return maxScore;
         }
         else{
@@ -161,7 +187,25 @@ public class AB {
 
 
                 ArrayList cap = mg.placeStone(move.getRow(), move.getCol(), player);
+                BitSet bitSet[] = zob.hash(mg.getBoard().getBoard());
+                int ent[] = zob.entryCalc(bitSet);
+                int minEntry = zob.minEntryIndex(ent);
+                if(mg.CAPTURE_TWO &&cap.size()>0 ){
+                    for(int j = sequence.size()-1; j>=0; j--){
+                        if(Arrays.deepEquals(mg.getBoard().getBoard(),sequence.get(j))){
+//                                System.out.println(Arrays.deepToString(seq));
+//                                System.out.println("Loop");
+//                                System.out.println(Arrays.deepToString(mg.getBoard().getBoard()));
 
+                            t.updateEntry(ent[minEntry], bitSet[minEntry], (byte) 0,(byte)a, currentDepth, player);
+
+
+                            return 0;
+                        }
+                    }
+
+                }
+                sequence.add(mg.getBoard().copy().getBoard());
                 Move m = new Move(move,cap);
 //                if(currentDepth<5&&record) {
 //                    tree.solve(mg, move, moves.size(),currentDepth,-100);
@@ -199,29 +243,25 @@ zobCount++;
                     writeInd=0;
 //                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                 }
-//                if(currentDepth<9) {
-//                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
-//                    mg.getBoard().printBoard();
-////                    tree.solve(mg, move, moves.size(),currentDepth,score);
-//                }
+                if(currentDepth<3) {
+                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
+                    mg.getBoard().printBoard();
+//                    tree.solve(mg, move, moves.size(),currentDepth,score);
+                }
 
 //                if(score<minScore){
 //                    minScore=score;
 ////                    indexMinScore = i;
 //                }
                 minScore = Math.min(score, minScore);
-                if(currentDepth==7&&move.getRow()==2&&move.getCol()==1&&mg.getBoard().getBoard()[0][0]==1&&mg.getBoard().getBoard()[0][1]==-1&&mg.getBoard().getBoard()[0][2]==-1){
-                    if(mg.getBoard().getBoard()[1][0]==-1&&mg.getBoard().getBoard()[1][1]==1&&mg.getBoard().getBoard()[1][2]==1){
-                    System.out.println("stop");}
-                }
+
 
 
 //                minScore = Math.min(minScore, score);
                 mg.revertMove(player,m);
-
+                sequence.remove(sequence.size()-1);
                 b= Math.min(b, minScore);
-                if(currentDepth<3){
-                System.out.println(a+ ", "+b);}
+
                 if(writeInd!=-1){
                 t.updateEntry(entry[writeInd],bitBoard[writeInd],(byte)score,(byte)a,currentDepth,player);}
                 if(a>=b||minScore==-1){
