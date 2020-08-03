@@ -7,26 +7,23 @@ public class Board {
     private int rowLength;
     private int colLength;
     private int[][] board;
-    private long zobristKey;
-    private int[] zobristTable;
+    private int[][] degreeBoard;
+
 
     public Board(int row, int col){
         rowLength = row;
         colLength = col;
 
         board = new int[rowLength][colLength];
-        for(int i=0; i<rowLength; i++){
-            for(int j=0; j<colLength; j++){
-                board[i][j] = 0;
-            }
-        }
-        zobristKey=0;
-        zobristTable = new int[row*col];
+        degreeBoard = new int[rowLength][colLength];
+
+
 
     }
     public Board(int[][] board){
         rowLength= board.length;
         colLength = board[0].length;
+        degreeBoard = new int[rowLength][colLength];
         this.board = board;
     }
     public void printBoard(){

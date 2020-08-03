@@ -10,7 +10,7 @@ public class Solver {
         int[][] b = {{1,1,1},
                 {-1,1,-1},
                 {0,0,0}};
-        Board board = new Board(5,5);
+        Board board = new Board(5,6);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
