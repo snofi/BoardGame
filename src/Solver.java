@@ -7,12 +7,15 @@ public class Solver {
 
 
 //       Board board = new Board(example);
-        int[][] b = {{0,0,0,0,0,0},
-                {0,0,1,0,0,1},
-                {0,0,1,1,-1,0},
-                {0,0,0,-1,-1,0},
-                {0,0,-1,0,0,0}};
-        Board board = new Board(b);
+//        int[][] b = {{0,0,-1,0,0,0},
+//                {0,0,1,0,0,1},
+//                {0,0,1,1,-1,0},
+//                {0,0,1,-1,-1,0},
+//                {0,0,-1,0,0,0}};
+        int[][] b = {{0,0,0},
+                     {0,0,0},
+                     {0,0,0}};
+        Board board = new Board(4,5);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
@@ -34,6 +37,7 @@ public class Solver {
         System.out.println("writing");
 //        TimeUnit.SECONDS.sleep(15);
         System.out.println("zobCOunt: "+ ai.zobCount);
+        System.out.println("nodes: " +ai.runCounter);
 
     }
 }

@@ -31,8 +31,9 @@ public class AB {
         }
         public int miniMax(MainGame mg, int currentDepth, int a, int b, int player, boolean maxPlayer, RowCol rc) {
             if(maxDepth<currentDepth){
-            maxDepth=currentDepth;
-            System.out.println(maxDepth);}
+                maxDepth=currentDepth;
+                System.out.println(maxDepth);
+            }
             runCounter++;
             if(mg.ifLine()){
             BitSet[] bitSet = zob.hash(mg.getBoard().getBoard());
@@ -151,9 +152,7 @@ public class AB {
                 }
 
 
-                if(score==1&&currentDepth==6){
-//                    System.out.println("why");
-                }
+
                 mg.revertMove(player,m);
                 sequence.remove(sequence.size()-1);
 //                if(score>maxScore){

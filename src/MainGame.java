@@ -5,7 +5,7 @@ import java.util.*;
 public class MainGame {
     private Board board;
     public final boolean CAPTURE_ONE = false;
-    public final boolean CAPTURE_TWO = false;
+    public final boolean CAPTURE_TWO = true;
     private final boolean THREE_IN_A_ROW = false;
     private final boolean FOUR_IN_A_ROW =true;
     private final boolean MOVE_ORDERING = true;
@@ -245,7 +245,7 @@ public class MainGame {
                 if (board.getValue(mid[0],mid[1]) == currentPlayer * -1) {
                     if (board.getValue(end[0],end[1]) == currentPlayer) {
                         captureStone(mid[0], mid[1]);
-
+                        captureNum++;
                         newCapture.add(new RowCol(mid[0],mid[1]));
                         if(currentPlayer==BLACK){ blackCapCount++;}
                         else if(currentPlayer==WHITE){ whiteCapCount++;}
@@ -254,7 +254,7 @@ public class MainGame {
             }
         }
 
-        return null;
+        return newCapture;
     }
     public ArrayList<RowCol> checkCaptureTwo(int row, int col, int currentPlayer){
 
@@ -287,7 +287,30 @@ public class MainGame {
        
         return newCapture;
     }
-    private int calcDegree(int row, int col){
+    private int calcDegree3(int row, int col){
+        int degree=0;
+        final int[][] directions = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
+        for(int i=0; i<directions.length; i++){
+            int[] dir = directions[i];
+            if(posValid(row+dir[0]*2,col+dir[1]*2)){
+                if(board.getValue(row+dir[0],col+dir[1])!=WHITE&&board.getValue(row+dir[0]*2,col+dir[1]*2)!=WHITE){
+                    degree++;
+                }
+            }
+        }
+        final int[][] centers = {{-1,0},{0,1},{-1,1},{-1,-1}};
+        for(int i=0; i<centers.length; i++){
+            int[] dir = directions[i];
+            if(posValid(row+dir[0],col+dir[1])&&posValid(row-dir[0],col-dir[1])){
+                if(board.getValue(row+dir[0],col+dir[1])!=WHITE&& board.getValue(row-dir[0],col-dir[1])!=WHITE){
+                   degree++;
+//
+                }
+            }
+        }
+        return degree;
+    }
+    private int calcDegree4(int row, int col){
         int degree = 0;
         final int[][] directions = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
         for(int i=0; i<directions.length; i++){
@@ -402,7 +425,11 @@ public class MainGame {
                 if (currentBoard[i][j] == 0){
                     int degree=0;
                     if(MOVE_ORDERING){
-                     degree = calcDegree(i,j);
+                        if(CAPTURE_TWO) {
+                            degree = calcDegree4(i,j);}
+                        else if(CAPTURE_ONE){
+                            degree = calcDegree3(i,j);
+                        }
                     }
                     availableMoves.add(new MoveD(new RowCol(i,j), degree));
                 }
@@ -463,7 +490,7 @@ public class MainGame {
         MainGame mg = new MainGame(new Board(b));
         for(int i=0; i<4; i++){
             for (int j=0; j<4; j++){
-                System.out.print(mg.calcDegree(i,j)+" ");
+//                System.out.print(mg.calcDegree(i,j)+" ");
             }
             System.out.println();
         }
