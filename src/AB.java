@@ -30,7 +30,9 @@ public class AB {
              maxDepth=0;
         }
         public int miniMax(MainGame mg, int currentDepth, int a, int b, int player, boolean maxPlayer, RowCol rc) {
-            maxDepth=Math.max(maxDepth,currentDepth);
+            if(maxDepth<currentDepth){
+            maxDepth=currentDepth;
+            System.out.println(maxDepth);}
             runCounter++;
             if(mg.ifLine()){
             BitSet[] bitSet = zob.hash(mg.getBoard().getBoard());
@@ -71,19 +73,19 @@ public class AB {
 //            mg.getBoard().printBoard();
             return 0;
         }
-            ArrayList<RowCol> moves = mg.getAvailableMoves();
+            ArrayList<MoveD> moves = mg.getAvailableMoves();
             int nodeCnt = moves.size();
             if(maxPlayer == true){
             int maxScore = Integer.MIN_VALUE;
             int indexMaxScore = -1;
             for(int i=0; i< moves.size(); i++){
 
-                RowCol move = moves.get(i);
+                RowCol move = moves.get(i).getRc();
 
 
                 ArrayList cap = mg.placeStone(move.getRow(),move.getCol(),player);
 
-                System.out.println("p"+player+" at ("+move.getRow()+", "+move.getCol());
+//                System.out.println("p"+player+" at ("+move.getRow()+", "+move.getCol());
 //                    mg.getBoard().printBoard();
                 BitSet bitSet[] = zob.hash(mg.getBoard().getBoard());
                 int ent[] = zob.entryCalc(bitSet);
@@ -183,7 +185,7 @@ public class AB {
 //            int indexMinScore = -1;
             for(int i=0; i< moves.size(); i++){
 
-                RowCol move = moves.get(i);
+                RowCol move = moves.get(i).getRc();
 
 
                 ArrayList cap = mg.placeStone(move.getRow(), move.getCol(), player);

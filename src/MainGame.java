@@ -1,15 +1,14 @@
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class MainGame {
     private Board board;
-
     public final boolean CAPTURE_ONE = false;
-    public final boolean CAPTURE_TWO = true;
+    public final boolean CAPTURE_TWO = false;
     private final boolean THREE_IN_A_ROW = false;
     private final boolean FOUR_IN_A_ROW =true;
+    private final boolean MOVE_ORDERING = true;
     private final int BLACK = 1;
     private final int WHITE = -1;
     private final int EMPTY = 0;
@@ -24,7 +23,7 @@ public class MainGame {
     private int[][] currentBoard;
     private int currentPlayer;
 
-    private ArrayList<RowCol> availableMoves;
+    private ArrayList<MoveD> availableMoves;
 
     private ArrayList<RowCol> newCap;
     public RowCol capturedOne;
@@ -130,31 +129,31 @@ public class MainGame {
         final int[][] centers = {{-1,0},{0,1},{-1,1},{-1,-1}};
         for(int i=0; i<centers.length; i++){
             int[] dir = directions[i];
-            for(int j=0; j<2; j++) {
-                int[] one = {row+dir[0]*2,col+dir[1]*2};
-                int[] two = {row+dir[0],col+dir[1]};
-                int[] three = {row-dir[0],col-dir[1]};
-                int[] four = {row-dir[0]*2, col-dir[1]*2};
-                if (posValid(one[0],one[1]) && posValid(three[0],three[1]) && board.getValue(one[0],one[1]) != 0) {
-                    if (board.getValue(one[0],one[1]) == board.getValue(two[0],two[1]) && board.getValue(two[0],two[1]) == board.getValue(three[0],three[1] )) {
-                        if(board.getValue(one[0],one[1])==board.getValue(row,col)){
-                            winner = board.getValue(row,col);
-                            return winner;
-                        }
-//                        return board.getValue(one[0],one[1]);
-                    }
-                }
-                if (posValid(two[0],two[1]) && posValid(four[0],four[1]) && board.getValue(two[0],two[1]) != 0) {
-                    if (board.getValue(two[0],two[1]) == board.getValue(three[0],three[1]) && board.getValue(three[0],three[1]) == board.getValue(four[0],four[1] )) {
-                        if(board.getValue(four[0],four[1])==board.getValue(row,col)){
-                            winner = board.getValue(row,col);
-                            return winner;
-                        }
-//                        return board.getValue(two[0],two[1]);
-                    }
-                }
 
+            int[] one = {row+dir[0]*2,col+dir[1]*2};
+            int[] two = {row+dir[0],col+dir[1]};
+            int[] three = {row-dir[0],col-dir[1]};
+            int[] four = {row-dir[0]*2, col-dir[1]*2};
+            if (posValid(one[0],one[1]) && posValid(three[0],three[1]) && board.getValue(one[0],one[1]) != 0) {
+                if (board.getValue(one[0],one[1]) == board.getValue(two[0],two[1]) && board.getValue(two[0],two[1]) == board.getValue(three[0],three[1] )) {
+                    if(board.getValue(one[0],one[1])==board.getValue(row,col)){
+                        winner = board.getValue(row,col);
+                        return winner;
+                    }
+//                        return board.getValue(one[0],one[1]);
+                }
             }
+            if (posValid(two[0],two[1]) && posValid(four[0],four[1]) && board.getValue(two[0],two[1]) != 0) {
+                if (board.getValue(two[0],two[1]) == board.getValue(three[0],three[1]) && board.getValue(three[0],three[1]) == board.getValue(four[0],four[1] )) {
+                    if(board.getValue(four[0],four[1])==board.getValue(row,col)){
+                        winner = board.getValue(row,col);
+                        return winner;
+                    }
+//                        return board.getValue(two[0],two[1]);
+                }
+            }
+
+
         }
         return 0;
     }
@@ -288,6 +287,48 @@ public class MainGame {
        
         return newCapture;
     }
+    private int calcDegree(int row, int col){
+        int degree = 0;
+        final int[][] directions = {{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
+        for(int i=0; i<directions.length; i++){
+            int[] dir = directions[i];
+            int[] end = {row+dir[0]*3,col+dir[1]*3};
+            if(posValid(end[0],end[1])){
+                if (board.getValue(end[0], end[1]) != WHITE) {
+                    int[] mid1 = {row + dir[0], col + dir[1]};
+                    int[] mid2 = {row + dir[0] * 2, col + dir[1] * 2};
+                    if (board.getValue(mid1[0], mid1[1]) != WHITE && board.getValue(mid2[0], mid2[1]) != WHITE) {
+                        degree++;
+//                        System.out.println(i);
+                    }
+                }
+            }
+        }
+        final int[][] centers = {{-1,0},{0,1},{-1,1},{-1,-1}};
+        for(int i=0; i<centers.length; i++){
+            int[] dir = directions[i];
+
+            int[] one = {row+dir[0]*2,col+dir[1]*2};
+            int[] two = {row+dir[0],col+dir[1]};
+            int[] three = {row-dir[0],col-dir[1]};
+            int[] four = {row-dir[0]*2, col-dir[1]*2};
+            if (posValid(one[0],one[1]) && posValid(three[0],three[1])) {
+                if (board.getValue(one[0],one[1]) != WHITE && board.getValue(two[0],two[1]) != WHITE && board.getValue(three[0],three[1])!=WHITE) {
+                    degree++;
+//                    System.out.println(i+"one");
+                }
+            }
+            if (posValid(two[0],two[1]) && posValid(four[0],four[1])) {
+                if (board.getValue(two[0],two[1])!= WHITE && board.getValue(three[0],three[1])!=WHITE && board.getValue(four[0],four[1] )!=WHITE) {
+                    degree++;
+//                    System.out.println(i+"two");
+                }
+            }
+
+
+        }
+        return degree;
+    }
     private boolean posValid(int row,int col){
         if(row>=0 && row<rowLength){
             if(col>=0 && col< colLength){
@@ -359,11 +400,21 @@ public class MainGame {
         for (int i=0; i<rowLength; i++){
             for (int j=0; j<colLength; j++){
                 if (currentBoard[i][j] == 0){
-
-                    availableMoves.add(new RowCol(i,j));
+                    int degree=0;
+                    if(MOVE_ORDERING){
+                     degree = calcDegree(i,j);
+                    }
+                    availableMoves.add(new MoveD(new RowCol(i,j), degree));
                 }
             }
         }
+
+        Collections.sort(availableMoves, new Comparator<MoveD>() {
+            public int compare(MoveD a1, MoveD a2) {
+                return -Integer.compare(a1.getDegree(),(a2.getDegree()));
+            }
+        });
+//        System.out.println("first e "+ availableMoves.get(0).getDegree()+ " "+availableMoves.get(availableMoves.size()-1).getDegree());
         return availableMoves;
     }
     public void revertMove(int thisPlayer, Move m){
@@ -404,4 +455,20 @@ public class MainGame {
 
     public int getBlackCapCount() { return blackCapCount; }
     public int getWhiteCapCount() { return whiteCapCount; }
+    public static void main(String[] args){
+        int[][] b = {{1,0,0,0},
+                {0,0,0,0},
+                {0,0,0,0},
+                {0,0,0,-1}};
+        MainGame mg = new MainGame(new Board(b));
+        for(int i=0; i<4; i++){
+            for (int j=0; j<4; j++){
+                System.out.print(mg.calcDegree(i,j)+" ");
+            }
+            System.out.println();
+        }
+//        System.out.println(mg.calcDegree(0,1));
+
+
+    }
 }
