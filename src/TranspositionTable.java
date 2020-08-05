@@ -172,7 +172,7 @@ public class TranspositionTable  {
     }
 
     public static void main(String[] args)throws IOException {
-        Zobrist z = new Zobrist(4,4);
+        Zobrist z = new Zobrist(3,4);
         TranspositionTable t = new TranspositionTable();
         int[][] b = {{-1,1,-1,1},
                 {1,0,0,0},

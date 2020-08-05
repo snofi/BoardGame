@@ -5,21 +5,23 @@ public class Solver {
         long startTime = System.nanoTime();
 //       Scanner scanner = new Scanner(System.in);
 
-        int[][] b = {{0,0,0,0,0,0},
-                {0,0,1,0,0,1},
-                {0,0,1,1,-1,0},
-                {0,0,0,-1,-1,0},
-                {0,0,-1,0,0,0}};
-        //  Two way to initialize board, 1) pass on a board array 2) pass on a dimension n,k for empty board
 
-//      Board board = new Board(b);
-        Board board = new Board(3,4);
+//       Board board = new Board(example);
+//        int[][] b = {{0,0,-1,0,0,0},
+//                {0,0,1,0,0,1},
+//                {0,0,1,1,-1,0},
+//                {0,0,1,-1,-1,0},
+//                {0,0,-1,0,0,0}};
+        int[][] b = {{0,0,0},
+                     {0,0,0},
+                     {0,0,0}};
+        Board board = new Board(4,5);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
 
-        Zobrist zob = new Zobrist(board.getRowLength(),board.getColLength()); // initialize zobrist hashing
-        TranspositionTable t = new TranspositionTable(); // initialize transposition table
+        Zobrist zob = new Zobrist(board.getRowLength(),board.getColLength());
+        TranspositionTable t = new TranspositionTable();
 
         AB ai = new AB(1,game,zob, t);
         board.printBoard();
@@ -35,6 +37,7 @@ public class Solver {
         System.out.println("writing");
 //        TimeUnit.SECONDS.sleep(15);
         System.out.println("zobCOunt: "+ ai.zobCount);
+        System.out.println("nodes: " +ai.runCounter);
 
     }
 }
