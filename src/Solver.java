@@ -5,20 +5,21 @@ public class Solver {
         long startTime = System.nanoTime();
 //       Scanner scanner = new Scanner(System.in);
 
-
-//       Board board = new Board(example);
         int[][] b = {{0,0,0,0,0,0},
                 {0,0,1,0,0,1},
                 {0,0,1,1,-1,0},
                 {0,0,0,-1,-1,0},
                 {0,0,-1,0,0,0}};
-        Board board = new Board(b);
+        //  Two way to initialize board, 1) pass on a board array 2) pass on a dimension n,k for empty board
+
+//      Board board = new Board(b);
+        Board board = new Board(3,4);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
 
-        Zobrist zob = new Zobrist(board.getRowLength(),board.getColLength());
-        TranspositionTable t = new TranspositionTable();
+        Zobrist zob = new Zobrist(board.getRowLength(),board.getColLength()); // initialize zobrist hashing
+        TranspositionTable t = new TranspositionTable(); // initialize transposition table
 
         AB ai = new AB(1,game,zob, t);
         board.printBoard();

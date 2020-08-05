@@ -7,9 +7,10 @@ import java.util.Random;
 
 public class Zobrist {
     private BitSet table[][][];
+    private static int seed = 42;
     public Zobrist(int row, int col)throws IOException {
 //        int board_size = row*col;
-        Random r = new Random();
+        Random r = new Random(seed);
 
         table = new BitSet[row][col][2];
         for (int i=0; i<row; i++){
