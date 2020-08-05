@@ -56,14 +56,7 @@ public class AB {
                 return -1;
             }
              }
-//             int res = mg.ifMakeLine(rc.getRow(),rc.getCol());
-//
-//            if(res!=0){
-//                BitSet[] bitSet = zob.hash(mg.getBoard().getBoard());
-//                int ent[] = zob.entryCalc(bitSet);
-//                t.updateEntry(ent[0],bitSet[0], (byte)res,(byte)3, currentDepth,player);
-//                return res;
-//            }
+
 
 
         if(mg.getBoard().isFull()){
@@ -89,8 +82,6 @@ public class AB {
 //                    mg.getBoard().printBoard();
 ////                    tree.solve(mg, move, moves.size(),currentDepth,score);
 //                }
-//                System.out.println("p"+player+" at ("+move.getRow()+", "+move.getCol());
-//                    mg.getBoard().printBoard();
                 BitSet bitSet[] = zob.hash(mg.getBoard().getBoard());
                 int ent[] = zob.entryCalc(bitSet);
                 int minEntry = zob.minEntryIndex(ent);
@@ -108,15 +99,7 @@ public class AB {
                 sequence.add(mg.getBoard().copy().getBoard());
                 Move m = new Move(move,cap);
 
-//                if(currentDepth<5&&record) {
-//                    tree.solve(mg, move, moves.size(),currentDepth,-100);
-//                }
-//                mg.getBoard().printBoard();
-//                if(mg.ifMakeLine(move.getRow(),move.getCol())==player){
 //
-//                    mg.revertMove(player,move);
-//                    return 1;
-//                }
                 BitSet[] bitBoard = zob.hash(mg.getBoard().getBoard());
                 int score=0;
                 int entry[] = zob.entryCalc(bitBoard);
@@ -148,7 +131,7 @@ public class AB {
 //                   System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                }
 
-                if(currentDepth>12) {
+                if(currentDepth<3) {
                     System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
                     mg.getBoard().printBoard();
 //                    tree.solve(mg, move, moves.size(),currentDepth,score);
@@ -255,7 +238,7 @@ public class AB {
                     writeInd=0;
 //                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                 }
-                if(currentDepth>12) {
+                if(currentDepth<3) {
                     System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                     mg.getBoard().printBoard();
 //                    tree.solve(mg, move, moves.size(),currentDepth,score);
@@ -278,7 +261,7 @@ public class AB {
                     break;
                 }
             }
-//            if(currentDepth<5) {
+//            if(currentDepth<3) {
 //                tree.solve(mg, moves.get(indexMinScore), moves.size(),currentDepth);
 //            }
             return minScore;

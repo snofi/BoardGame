@@ -15,7 +15,7 @@ public class Solver {
         int[][] b = {{0,0,0},
                      {0,0,0},
                      {0,0,0}};
-        Board board = new Board(4,5);
+        Board board = new Board(4,4);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
