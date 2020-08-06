@@ -12,10 +12,11 @@ public class Solver {
 //                {0,0,1,1,-1,0},
 //                {0,0,1,-1,-1,0},
 //                {0,0,-1,0,0,0}};
-        int[][] b = {{0,0,0},
-                     {0,0,0},
-                     {0,0,0}};
-        Board board = new Board(4,4);
+//        int[][] b = {{1,0,0,0},
+//                     {0,0,0,0},
+//                     {0,0,0,0},
+//                     {0,0,0,0}};
+        Board board = new Board(3,4);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
@@ -38,6 +39,7 @@ public class Solver {
 //        TimeUnit.SECONDS.sleep(15);
         System.out.println("zobCOunt: "+ ai.zobCount);
         System.out.println("nodes: " +ai.runCounter);
+        System.out.println("maxDepth: "+ai.maxDepth);
 
     }
 }

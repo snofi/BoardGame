@@ -4,10 +4,11 @@ import java.util.*;
 
 public class MainGame {
     private Board board;
-    public final boolean CAPTURE_ONE = false;
-    public final boolean CAPTURE_TWO = false;
-    private final boolean THREE_IN_A_ROW = false;
-    private final boolean FOUR_IN_A_ROW =true;
+    public final boolean CAPTURE_ONE = true;
+    public final boolean CAPTURE_TWO =false;
+    private final boolean THREE_IN_A_ROW = true;
+
+    private final boolean FOUR_IN_A_ROW =false;
     private final boolean MOVE_ORDERING = true;
     private final int BLACK = 1;
     private final int WHITE = -1;
@@ -234,7 +235,7 @@ public class MainGame {
         this.currentPlayer=currentPlayer;
         ArrayList<RowCol> newCapture = new ArrayList<>();
         int[][] direction = {{-1,0,-2,0},{-1,1,-2,2},{0,1,0,2},{1,1,2,2},{1,0,2,0},{1,-1,2,-2},{0,-1,0,-2},{-1,-1,-2,-2}};
-        int captureNum = 0;
+
 
         for(int i=0; i< direction.length; i++){
 
@@ -451,9 +452,24 @@ public class MainGame {
             for (RowCol stone : m.getCaptured()) {
                 board.setBoard(stone.getRow(), stone.getCol(), -thisPlayer);
             }
-            captureNum=captureNum-2;
-            if(thisPlayer==BLACK){ blackCapCount-=2;}
-            else if(thisPlayer==WHITE){ whiteCapCount-=2;}
+            if(CAPTURE_ONE){
+                captureNum=captureNum--;
+                if(thisPlayer==BLACK){
+                    blackCapCount--;
+                }
+                else if(thisPlayer==WHITE){
+                    whiteCapCount--;
+                }
+            }
+            if(CAPTURE_TWO){
+                captureNum=captureNum-2;
+                if(thisPlayer==BLACK){
+                    blackCapCount-=2;
+                }
+                else if(thisPlayer==WHITE){
+                    whiteCapCount-=2;
+                }
+            }
         }
 
 

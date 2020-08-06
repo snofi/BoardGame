@@ -10,7 +10,7 @@ public class AB {
         public int zobCount;
 //        private final static int maxDepth =10;
         private boolean record;
-        public static int maxDepth;
+        public int maxDepth;
         private Zobrist zob;
         private TranspositionTable t;
         private ArrayList<int[][]> sequence;
@@ -32,7 +32,7 @@ public class AB {
         public int miniMax(MainGame mg, int currentDepth, int a, int b, int player, boolean maxPlayer, RowCol rc) {
             if(maxDepth<currentDepth){
                 maxDepth=currentDepth;
-                System.out.println(maxDepth);}
+               }
             runCounter++;
             if(mg.ifLine()){
             BitSet[] bitSet = zob.hash(mg.getBoard().getBoard());
@@ -41,7 +41,7 @@ public class AB {
 //
             if(mg.getWinner()==aiPlayer){
                 mg.setWinner(0);
-                mg.setCaptureNum(0);
+//                mg.setCaptureNum(0);
 //                System.out.println("aiPlayer wins");
                 t.updateEntry(ent[0],bitSet[0], (byte)1,(byte)3, currentDepth,player);
 //                System.out.println(t.getScore(ent,aiPlayer));
@@ -50,7 +50,7 @@ public class AB {
             }
             if(mg.getWinner()==-aiPlayer){
                 mg.setWinner(0);
-                mg.setCaptureNum(0);
+//                mg.setCaptureNum(0);
 //                System.out.println("aiPlayer loses");
                 t.updateEntry(ent[0],bitSet[0], (byte)-1,(byte)3, currentDepth,player);
                 return -1;
@@ -132,9 +132,9 @@ public class AB {
                }
 
                 if(currentDepth<3) {
-                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
-                    mg.getBoard().printBoard();
-//                    tree.solve(mg, move, moves.size(),currentDepth,score);
+//                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol());
+//                    mg.getBoard().printBoard();
+                    tree.solve(mg, move,nodeCnt,currentDepth,mg.getBlackCapCount(),score, player);
                 }
 
 
@@ -239,9 +239,10 @@ public class AB {
 //                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
                 }
                 if(currentDepth<3) {
-                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
-                    mg.getBoard().printBoard();
-//                    tree.solve(mg, move, moves.size(),currentDepth,score);
+//                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
+//                    mg.getBoard().printBoard();
+//
+                    tree.solve(mg, move,nodeCnt,currentDepth,mg.getWhiteCapCount(),score, player);
                 }
 
 //

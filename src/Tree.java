@@ -39,7 +39,7 @@ public class Tree {
 ////        printLine.println(message);
 //
 //    }
-    public int solve(MainGame mg, RowCol rowCol, int nodeCnt, int currentDepth, int state,int player){
+    public int solve(MainGame mg, RowCol rowCol, int nodeCnt, int currentDepth, int capCount, int state,int player){
 
         depth = currentDepth;
 
@@ -49,10 +49,10 @@ public class Tree {
         for (int i=0;i<currentDepth;i++){
             message= message+"    ";
         }
-    if (mg.getCurrentPlayer()==1) {
-        message += "[Dep " + depth + "] p"+player+" at " +  getCharForNumber((rowCol.getCol()+1)) +(mg.getBoard().getRowLength()-rowCol.getRow()) +  ", n= " + nodeCnt + " c= " + mg.getBlackCapCount() + ", r= " + state;
+    if (player==1) {
+        message += "[Dep " + depth + "] p"+player+" at " +  getCharForNumber((rowCol.getCol()+1)) +(mg.getBoard().getRowLength()-rowCol.getRow()) +  ", nodes: " + nodeCnt + " black captured= " +capCount + ", result= " + state;
     }else{
-        message += "[Dep " + depth + "] p"+player+" at " +  getCharForNumber((rowCol.getCol()+1)) +(mg.getBoard().getRowLength()-rowCol.getRow()) +  ", n= " + nodeCnt + " c= " + mg.getWhiteCapCount() + ", r= " + state;
+        message += "[Dep " + depth + "] p"+player+" at " +  getCharForNumber((rowCol.getCol()+1)) +(mg.getBoard().getRowLength()-rowCol.getRow()) +  ", nodes: " + nodeCnt + " white captured= " + capCount + ", result= " + state;
     }
         printLine.printf("%s" + "%n", message);
 
