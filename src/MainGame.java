@@ -4,11 +4,11 @@ import java.util.*;
 
 public class MainGame {
     private Board board;
-    public final boolean CAPTURE_ONE = true;
-    public final boolean CAPTURE_TWO =false;
-    private final boolean THREE_IN_A_ROW = true;
+    public final boolean CAPTURE_ONE = false;
+    public final boolean CAPTURE_TWO =true;
+    public final boolean THREE_IN_A_ROW = false;
 
-    private final boolean FOUR_IN_A_ROW =false;
+    public final boolean FOUR_IN_A_ROW =true;
     private final boolean MOVE_ORDERING = true;
     private final int BLACK = 1;
     private final int WHITE = -1;
@@ -24,7 +24,7 @@ public class MainGame {
     private int[][] currentBoard;
     private int currentPlayer;
 
-    private ArrayList<MoveD> availableMoves;
+    private ArrayList<RowCol> availableMoves;
 
     private ArrayList<RowCol> newCap;
     public RowCol capturedOne;
@@ -419,7 +419,7 @@ public class MainGame {
 
         updateBoard();
 
-        availableMoves = new ArrayList<>();
+        ArrayList<MoveD> availableMovesD = new ArrayList<>();
 
         for (int i=0; i<rowLength; i++){
             for (int j=0; j<colLength; j++){
@@ -432,17 +432,22 @@ public class MainGame {
                             degree = calcDegree3(i,j);
                         }
                     }
-                    availableMoves.add(new MoveD(new RowCol(i,j), degree));
+                    availableMovesD.add(new MoveD(new RowCol(i,j), degree));
                 }
             }
         }
 
-        Collections.sort(availableMoves, new Comparator<MoveD>() {
+        Collections.sort(availableMovesD, new Comparator<MoveD>() {
             public int compare(MoveD a1, MoveD a2) {
                 return -Integer.compare(a1.getDegree(),(a2.getDegree()));
             }
         });
 //        System.out.println("first e "+ availableMoves.get(0).getDegree()+ " "+availableMoves.get(availableMoves.size()-1).getDegree());
+        availableMoves = new ArrayList<>();
+        for(MoveD mD: availableMovesD ){
+            availableMoves.add(mD.getRc());
+        }
+
         return availableMoves;
     }
     public void revertMove(int thisPlayer, Move m){

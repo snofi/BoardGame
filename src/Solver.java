@@ -16,7 +16,7 @@ public class Solver {
 //                     {0,0,0,0},
 //                     {0,0,0,0},
 //                     {0,0,0,0}};
-        Board board = new Board(3,4);
+        Board board = new Board(4,5);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
@@ -27,7 +27,7 @@ public class Solver {
         AB ai = new AB(1,game,zob, t);
         board.printBoard();
 
-        int result = ai.miniMax(game, 0,-5, 5, 1, true, new RowCol(0,0));
+        int result = ai.miniMax(game, 0,-5, 5, 1, true, new Move(new RowCol(0,0),null,0));
 
         System.out.println("result: "+ result);
 
