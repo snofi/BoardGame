@@ -7,7 +7,7 @@ public class TranspositionTable  {
 
     private long[] table;
     public TranspositionTable()  {
-        table = new long[(int)Math.pow(2,26)];
+        table = new long[(int)Math.pow(2,27)];
 
     }
     public boolean checkEntryExist(int entry){
@@ -34,7 +34,7 @@ public class TranspositionTable  {
             System.out.println("update error "+result);
         }
 //        System.out.println(val);
-        val.clear(0,26);
+        val.clear(0,27);
 //        System.out.println(val);
 
 
@@ -72,9 +72,9 @@ public class TranspositionTable  {
 //        System.out.println(p);
         BitSet prev = longToBitSet(p);
 
-        current.clear(1,26);
+        current.clear(1,27);
 
-        prev.clear(1,26);
+        prev.clear(1,27);
         if(current.equals(prev)){
             int prev_cut = getCut(entry,player);
             if(prev_cut==3){return true;}
@@ -144,10 +144,10 @@ public class TranspositionTable  {
         long v = table[entry];
         BitSet bit = longToBitSet(v);
 
-        BitSet depth = bit.get(0,26);
+        BitSet depth = bit.get(0,27);
         depth.clear(0,4);
         BitSet temp = (BitSet) depth.clone();
-        temp.clear(0,26);
+        temp.clear(0,27);
         if(depth.equals(temp)){
 
             return 0;

@@ -106,9 +106,9 @@ public class Zobrist {
         return h;
     }
     public static int entryCalc(BitSet b){
-        BitSet temp = new BitSet(26);
+        BitSet temp = new BitSet(27);
         BitSet clo = (BitSet) temp.clone();
-        temp.set(0,26);
+        temp.set(0,27);
 
         temp.and(b);
         //         b.clear(26,b.size());

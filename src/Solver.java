@@ -16,7 +16,7 @@ public class Solver {
 //                     {0,0,0,0},
 //                     {0,0,0,0},
 //                     {0,0,0,0}};
-        Board board = new Board(4,4);
+        Board board = new Board(5,4);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
