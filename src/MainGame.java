@@ -4,11 +4,11 @@ import java.util.*;
 
 public class MainGame {
     private Board board;
-    public final boolean CAPTURE_ONE =false;
-    public final boolean CAPTURE_TWO =true;
-    public final boolean THREE_IN_A_ROW = false;
+    public final boolean CAPTURE_ONE =true;
+    public final boolean CAPTURE_TWO =false;
+    public final boolean THREE_IN_A_ROW = true;
 
-    public final boolean FOUR_IN_A_ROW =true;
+    public final boolean FOUR_IN_A_ROW =false;
     private final boolean MOVE_ORDERING = true;
     private final int BLACK = 1;
     private final int WHITE = -1;
