@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MainGame {
     private Board board;
-    public final boolean CAPTURE_ONE =true;
+    public final boolean CAPTURE_ONE =false;
     public final boolean CAPTURE_TWO =false;
     public final boolean THREE_IN_A_ROW = true;
 
@@ -421,20 +421,20 @@ public class MainGame {
         updateBoard();
 
 
-        newCap=null;
+        newCap= new ArrayList<>();
         if(CAPTURE_ONE){
 
-         newCap=checkCaptureOne(row, col, state);
+         newCap.addAll(checkCaptureOne(row, col, state));
 
         }
         if(CAPTURE_TWO){
 
-           newCap=checkCaptureTwo(row, col, state);
+           newCap.addAll(checkCaptureTwo(row, col, state));
         }
 
         updateBoard();
 
-        return newCap;
+        return newCap.size()>0 ? newCap : null;
     }
 
     public void setCaptureNum(int captureNum) {
@@ -499,23 +499,12 @@ public class MainGame {
         if(m.getCaptured()!=null&& m.getCaptured().size()>0) {
             for (RowCol stone : m.getCaptured()) {
                 board.setBoard(stone.getRow(), stone.getCol(), -thisPlayer);
-            }
-            if(CAPTURE_ONE){
                 captureNum=captureNum--;
                 if(thisPlayer==BLACK){
                     blackCapCount--;
                 }
                 else if(thisPlayer==WHITE){
                     whiteCapCount--;
-                }
-            }
-            if(CAPTURE_TWO){
-                captureNum=captureNum-2;
-                if(thisPlayer==BLACK){
-                    blackCapCount-=2;
-                }
-                else if(thisPlayer==WHITE){
-                    whiteCapCount-=2;
                 }
             }
         }

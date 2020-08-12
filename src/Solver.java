@@ -16,7 +16,7 @@ public class Solver {
                      {0,0,0,0,0},
                      {0,0,0,0,0},
                      {0,0,0,-1,1}};
-        Board board = new Board(5,6);
+        Board board = new Board(10,10);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));
@@ -29,7 +29,7 @@ public class Solver {
 
         int result = ai.miniMax(game, 0,-5, 5, 1, true, new Move(new RowCol(0,0),null,0));
 
-        System.out.println("result: "+ result);
+
 
         long endTime   = System.nanoTime();
         long totalTime = (endTime - startTime);
@@ -38,6 +38,9 @@ public class Solver {
         System.out.println("writing");
 //        TimeUnit.SECONDS.sleep(15);
         System.out.println("zobCOunt: "+ ai.zobCount);
+        System.out.println();
+
+        System.out.println("result: "+ result);
         System.out.println("nodes: " +ai.runCounter);
         System.out.println("maxDepth: "+ai.maxDepth);
 

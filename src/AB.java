@@ -95,7 +95,7 @@ public class AB {
 
 //                printIn(currentDepth,mg, move, player);
 
-                if((mg.CAPTURE_ONE)&& cap.size()>0 ){
+                if((cap!=null)&& cap.size()>0 ){
                     if(ifLoop(mg,b,currentDepth,player)){
                         return 0;
                     }
@@ -178,7 +178,7 @@ public class AB {
 
                 ArrayList cap = mg.placeStone(move.getRow(), move.getCol(), player);
 
-                if((mg.CAPTURE_ONE||mg.CAPTURE_TWO)&& cap.size()>0 ){
+                if((mg.CAPTURE_ONE||mg.CAPTURE_TWO)&& cap!=null && cap.size()>0 ){
                     if(ifLoop(mg,a,currentDepth,player)){
                         return 0;
                     }
