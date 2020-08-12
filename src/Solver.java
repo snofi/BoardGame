@@ -12,11 +12,11 @@ public class Solver {
 //                {0,0,1,1,-1,0},
 //                {0,0,1,-1,-1,0},
 //                {0,0,-1,0,0,0}};
-//        int[][] b = {{1,0,0,0},
-//                     {0,0,0,0},
-//                     {0,0,0,0},
-//                     {0,0,0,0}};
-        Board board = new Board(4,9);
+        int[][] b = {{0,1,0,-1,0},
+                     {0,0,0,0,0},
+                     {0,0,0,0,0},
+                     {0,0,0,-1,1}};
+        Board board = new Board(5,6);
         MainGame game = new MainGame(board);
 
 //        System.out.println(game.ifMakeLine(1,1));

@@ -76,7 +76,7 @@ public class AB {
             moves.add(almost);
 
         }
-        else if((mg.CAPTURE_ONE)&&pre_move.getCaptured()!=null&&pre_move.getCaptured().size()>0){
+        else if((mg.CAPTURE_ONE||(mg.CAPTURE_TWO&&mg.FOUR_IN_A_ROW))&&pre_move.getCaptured()!=null&&pre_move.getCaptured().size()>0){
             moves= pre_move.getCaptured();
         }
         else{
@@ -95,7 +95,7 @@ public class AB {
 
 //                printIn(currentDepth,mg, move, player);
 
-                if((mg.CAPTURE_ONE||mg.CAPTURE_TWO)&& cap.size()>0 ){
+                if((mg.CAPTURE_ONE)&& cap.size()>0 ){
                     if(ifLoop(mg,b,currentDepth,player)){
                         return 0;
                     }
@@ -264,7 +264,7 @@ public class AB {
             }
         }
         public void printOut(int currentDepth, MainGame mg, RowCol move, int nodeCnt, int score, int player){
-            if(currentDepth<4) {
+            if(currentDepth<5) {
 //                    System.out.println("depth"+currentDepth+ " score"+score+", "+player+" at "+ move.getRow()+","+move.getCol()+" write");
 //                    mg.getBoard().printBoard();
 //

@@ -314,6 +314,12 @@ public class MainGame {
                 if(board.getValue(row+dir[0],col+dir[1])!=WHITE&&board.getValue(row+dir[0]*2,col+dir[1]*2)!=WHITE){
                     degree++;
                 }
+                else if(CAPTURE_ONE &&board.getValue(row+dir[0],col+dir[1])==WHITE&&board.getValue(row+dir[0]*2,col+dir[1]*2)==BLACK ){
+                    degree++;
+                }
+                else if(CAPTURE_TWO && posValid(row+dir[0]*3,col+dir[1]*3) && board.getValue(row+dir[0]*3,col+dir[1]*3)==WHITE&&board.getValue(row+dir[0],col+dir[1])==WHITE&&board.getValue(row+dir[0]*2,col+dir[1]*2)==BLACK){
+                    degree ++;
+                }
             }
         }
         final int[][] centers = {{-1,0},{0,1},{-1,1},{-1,-1}};
@@ -334,16 +340,22 @@ public class MainGame {
         for(int i=0; i<directions.length; i++){
             int[] dir = directions[i];
             int[] end = {row+dir[0]*3,col+dir[1]*3};
-            if(posValid(end[0],end[1])){
-                if (board.getValue(end[0], end[1]) != WHITE) {
-                    int[] mid1 = {row + dir[0], col + dir[1]};
-                    int[] mid2 = {row + dir[0] * 2, col + dir[1] * 2};
-                    if (board.getValue(mid1[0], mid1[1]) != WHITE && board.getValue(mid2[0], mid2[1]) != WHITE) {
-                        degree++;
+            int[] mid1 = {row + dir[0], col + dir[1]};
+            int[] mid2 = {row + dir[0] * 2, col + dir[1] * 2};
+            if (posValid(end[0],end[1])&& board.getValue(end[0], end[1]) != WHITE) {
+
+                if (board.getValue(mid1[0], mid1[1]) != WHITE && board.getValue(mid2[0], mid2[1]) != WHITE) {
+                    degree++;
 //                        System.out.println(i);
-                    }
+                }
+                else if(CAPTURE_TWO && board.getValue(end[0], end[1]) == BLACK&& board.getValue(mid1[0], mid1[1]) == WHITE && board.getValue(mid2[0], mid2[1]) == WHITE){
+                    degree+=2;
                 }
             }
+            if(CAPTURE_ONE && posValid(mid2[0],mid2[1]) && board.getValue(mid2[0], mid2[1]) == BLACK && board.getValue(mid1[0], mid1[1]) == WHITE){
+                    degree+=2;
+            }
+
         }
         final int[][] centers = {{-1,0},{0,1},{-1,1},{-1,-1}};
         for(int i=0; i<centers.length; i++){
@@ -457,9 +469,9 @@ public class MainGame {
                 if (currentBoard[i][j] == 0){
                     int degree=0;
                     if(MOVE_ORDERING){
-                        if(CAPTURE_TWO) {
+                        if(FOUR_IN_A_ROW) {
                             degree = calcDegree4(i,j);}
-                        else if(CAPTURE_ONE){
+                        else if(THREE_IN_A_ROW){
                             degree = calcDegree3(i,j);
                         }
                     }
